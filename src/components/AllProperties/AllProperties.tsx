@@ -1,16 +1,16 @@
 "use client"
 
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function AllProperties() {
-    const axiosPublic = useAxiosPublic();
     const [allProperties, setAllProperties] = useState([]);
     const [properties, setProperties] = useState([]);
 
     useEffect(() => {
-        axiosPublic.get("/verified-properties")
+        axios.get("https://dream-dwellings-server.vercel.app/verified-properties")
             .then(res => {
-                axiosPublic.get("/fraud-users")
+                axios.get("https://dream-dwellings-server.vercel.app/fraud-users")
                     .then(userRes => {
                         const propertyData = res.data;
                         const userData = userRes.data;
@@ -21,7 +21,7 @@ export default function AllProperties() {
                     })
 
             });
-    }, [axiosPublic]);
+    }, []);
 
     const handlePriceChange = e => {
         if (e.target.value === "All") {

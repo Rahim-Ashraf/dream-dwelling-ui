@@ -23,10 +23,26 @@ export default function SignIn() {
             email,
             password,
             callbackUrl: "/", // Redirect path after login
-          });
-          if (!res) {
+        });
+        if (res?.ok) {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Loged In Successfully",
+                showConfirmButton: false,
+                timer: 1500
+            });
             console.log(res)
-          }
+            router.push(res.url || '/');
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Invalid email or password",
+                confirmButtonText: "Try again",
+                confirmButtonColor: "#0060f0",
+            });
+        }
     }
 
     const handleGoogleLogin = () => {

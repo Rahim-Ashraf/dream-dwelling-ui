@@ -1,22 +1,25 @@
 "use client"
 
-import axios from "axios";
-// import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { signOut, useSession } from "next-auth/react";
 
 interface User {
     _id: string;
     email: string;
     userName: string;
     role: string;
+    password: string;
     is_fraud: string;
 }
 
 export default function Navbar() {
+    const session = useSession();
+    console.log(session)
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     // Variants for navbar animation
     const navbarVariants = {
@@ -39,7 +42,7 @@ export default function Navbar() {
     };
 
     const pathname = usePathname()
-    // const dbUser = useState<User>();
+    const [dbUser, setDbUser] = useState<User>();
 
     // useEffect(() => {
     //     axios.get(`https://dream-dwellings-server.vercel.app/user?email=${'agent@gmail.com'}`)
@@ -56,19 +59,16 @@ export default function Navbar() {
     //     }
     // })
 
-    // const handleLogout = () => {
-    //     logOut()
-    // }
-
     const menu = <>
         <Link href="/" className={`${pathname === '/' ? "text-transparent bg-clip-text bg-gradient-to-br from-teal-500 to-[#0060f0]" : "text-gray-800"} font-bold`
         }>Home</Link>
         <Link href="/all-properties" className={`${pathname === '/all-properties' ? "text-transparent bg-clip-text bg-gradient-to-br from-teal-500 to-[#0060f0]" : "text-gray-800"} font-bold`
         }>All properties</Link>
-        {/* {user && <>
-            <Link href={dbUser?.role === "admin" ? "/admin-dashboard/my-profile" : dbUser?.role === "agent" ? "/agent-dashboard/my-profile" : "/dashboard/my-profile"} className={`${router.pathname === '/' ? "text-transparent bg-clip-text bg-gradient-to-br from-teal-500 to-[#0060f0]" : "text-gray-800"} font-bold`
-            }>Dashboard</Link>
-        </>} */}
+        {session.status === "authenticated" && <>
+            <Link href={dbUser?.role === "admin" ? "/admin-dashboard/my-profile" : dbUser?.role === "agent" ? "/agent-dashboard/my-profile" : "/dashboard/my-profile"}
+                className={`${pathname === `/${dbUser?.role}-dashboard/my-profile` ? "text-transparent bg-clip-text bg-gradient-to-br from-teal-500 to-[#0060f0]" : "text-gray-800"} font-bold`
+                }>Dashboard</Link>
+        </>}
     </>
     return (
         <div className="px-4 relative py-4 flex justify-between items-center">
@@ -109,12 +109,11 @@ export default function Navbar() {
                 </div>
             </div>
             <div>
-                <h6>profile</h6>
-                {/* {user ? <details className="dropdown dropdown-end">
+                {session.status === "authenticated" ? <details className="dropdown dropdown-end">
                     <summary tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
                             <Image
-                                src={user?.photoURL}
+                                src="/boy.png"  //need to update url
                                 alt="Tailwind CSS Navbar component"
                                 width={40}
                                 height={40}
@@ -122,10 +121,12 @@ export default function Navbar() {
                         </div>
                     </summary >
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><button onClick={handleLogout} className="btn btn-error text-white">Logout</button></li>
+                        <li><button onClick={() => signOut()} className="bg-gradient-to-br from-rose-400 to-red-500 text-white font-semibold px-8 py-4 rounded">Logout</button></li>
                     </ul>
                 </details>
-                    : <Link href="/login"><button className="ml-4 btn bg-gradient-to-br from-teal-500 to-[#0060f0] text-white font-bold">Login</button></Link>} */}
+                    : <Link href="/signin"
+                        className="bg-gradient-to-br from-teal-500 to-[#0060f0] text-white font-semibold px-8 py-4 rounded"
+                    >Login</Link>}
             </div>
         </div>
     );
