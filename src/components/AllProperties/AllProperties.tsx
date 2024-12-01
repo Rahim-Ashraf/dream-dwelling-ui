@@ -1,25 +1,41 @@
 "use client"
 
 import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { FaLocationDot } from "react-icons/fa6";
+import PrimaryButton from "../shared/PrimaryButton/PrimaryButton";
+import Image from "next/image";
+
+interface Property {
+    _id: string;
+    agent_email: string;
+    agent_image: string;
+    agent_name: string;
+    price_range: string;
+    property_image: string;
+    property_location: string;
+    property_title: string;
+    verification_status: string;
+}
 
 export default function AllProperties() {
-    const [allProperties, setAllProperties] = useState([]);
-    const [properties, setProperties] = useState([]);
+    const [allProperties, setAllProperties] = useState<Property[]>([]);
+    const [properties, setProperties] = useState<Property[]>([]);
+    console.log(properties[0])
 
     useEffect(() => {
         axios.get("https://dream-dwellings-server.vercel.app/verified-properties")
             .then(res => {
                 axios.get("https://dream-dwellings-server.vercel.app/fraud-users")
                     .then(userRes => {
-                        const propertyData = res.data;
+                        const propertyData: Property[] = res.data;
                         const userData = userRes.data;
-                        const fraudEmails = userData.map(user => user.email)
+                        const fraudEmails = userData.map((user: { email: string }) => user.email)
                         const filterdProperties = propertyData.filter(property => !fraudEmails.includes(property.agent_email));
                         setProperties(filterdProperties)
                         setAllProperties(filterdProperties);
                     })
-
             });
     }, []);
 
@@ -42,7 +58,7 @@ export default function AllProperties() {
     const handleSearch = e => {
         e.preventDefault();
         const text = e.target.search.value;
-        axiosPublic.get(`/verified-properties-search?text=${text}`)
+        axios.get(`https://dream-dwellings-server.vercel.app/verified-properties-search?text=${text}`)
             .then(res => {
                 setProperties(res.data)
                 // console.log(res.data)
@@ -52,7 +68,7 @@ export default function AllProperties() {
 
 
     return (
-        <>
+        <div className="max-w-[1920px] mx-auto p-8">
             <div className="md:flex justify-center items-center gap-10">
                 <div className="">
                     <h2 className="text-xl font-bold">Search by Location</h2>
@@ -81,8 +97,13 @@ export default function AllProperties() {
             </div>
             <h1 className="text-5xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-br from-teal-500 to-[#0060f0] my-6">All properties </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {properties.map(property => <div key={property._id} className="card card-compact bg-base-100 shadow-lg shadow-teal-200">
-                    <figure className="max-h-60"><img src={property.property_image} alt="" /></figure>
+                {properties.map(property => <div key={property._id}
+                    className="rounded-2xl overflow-hidden shadow-lg shadow-teal-200 flex flex-col justify-between">
+                    <figure>
+                        <Image
+                            src={property.property_image}
+                            alt="" width={600} height={600} />
+                    </figure>
                     <div className="p-4">
                         <div>
                             <h2 className="font-bold text-2xl mb-4">{property.property_title}</h2>
@@ -97,17 +118,22 @@ export default function AllProperties() {
                             <div className="divider"></div>
                             <div className="flex justify-between">
                                 <p className="font-bold">Agent: {property.agent_name}</p>
-                                <div className="max-w-12"><img className="rounded-[50%]" src={property.agent_image} alt="" /></div>
+                                <div className="max-w-12">
+                                    <Image
+                                        src={property.agent_image}
+                                        alt="" width={50} height={50}
+                                        className="rounded-[50%]" />
+                                </div>
                             </div>
                         </div>
                         <div className="pt-4">
-                            <Link to={`/details/${property._id}`}>
+                            <Link href={`/details/${property._id}`}>
                                 <PrimaryButton btnText={"Details"}></PrimaryButton>
                             </Link>
                         </div>
                     </div>
                 </div>)}
             </div>
-        </>
+        </div>
     )
 }
