@@ -18,6 +18,13 @@ interface Property {
     property_title: string;
     verification_status: string;
 }
+interface FraudUsers {
+    _id: string;
+    email: string;
+    userName: string;
+    role: string;
+    is_fraud: string;
+}
 
 export default function AllProperties() {
     const [allProperties, setAllProperties] = useState<Property[]>([]);
@@ -31,7 +38,7 @@ export default function AllProperties() {
                     .then(userRes => {
                         const propertyData: Property[] = res.data;
                         const userData = userRes.data;
-                        const fraudEmails = userData.map((user: { email: string }) => user.email)
+                        const fraudEmails = userData.map((user: FraudUsers) => user.email)
                         const filterdProperties = propertyData.filter(property => !fraudEmails.includes(property.agent_email));
                         setProperties(filterdProperties)
                         setAllProperties(filterdProperties);
