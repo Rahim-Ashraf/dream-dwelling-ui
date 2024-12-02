@@ -29,7 +29,7 @@ interface FraudUsers {
 export default function AllProperties() {
     const [allProperties, setAllProperties] = useState<Property[]>([]);
     const [properties, setProperties] = useState<Property[]>([]);
-    console.log(properties[0])
+    const [searchText, setSearchText] = useState({ search: "" });
 
     useEffect(() => {
         axios.get("https://dream-dwellings-server.vercel.app/verified-properties")
@@ -46,14 +46,14 @@ export default function AllProperties() {
             });
     }, []);
 
-    const handlePriceChange = e => {
-        if (e.target.value === "All") {
+    const handlePriceChange = (e: React.FormEvent<HTMLSelectElement>) => {
+        if (e.currentTarget.value === "All") {
             setProperties(allProperties);
             return
         }
         const filteredProperties = allProperties.filter(property => {
-            const filterdLowPrice = parseInt(e.target.value.split('-')[0]);
-            const filterdHighPrice = parseInt(e.target.value.split('-')[1]);
+            const filterdLowPrice = parseInt(e.currentTarget.value.split('-')[0]);
+            const filterdHighPrice = parseInt(e.currentTarget.value.split('-')[1]);
             const dbLowPrice = parseInt(property.price_range.split('-')[0]);
             const dbHighPrice = parseInt(property.price_range.split('-')[1]);
             if (dbLowPrice >= filterdLowPrice && dbHighPrice <= filterdHighPrice) {
@@ -62,15 +62,18 @@ export default function AllProperties() {
         })
         setProperties(filteredProperties);
     }
-    const handleSearch = e => {
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setSearchText((prev) => ({ ...prev, [name]: value }));
+    };
+    const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        const text = e.target.search.value;
-        axios.get(`https://dream-dwellings-server.vercel.app/verified-properties-search?text=${text}`)
+        axios.get(`https://dream-dwellings-server.vercel.app/verified-properties-search?text=${searchText.search}`)
             .then(res => {
                 setProperties(res.data)
-                // console.log(res.data)
+                setSearchText({ search: '' });
             });
-        e.target.search.value = ""
     }
 
 
@@ -80,9 +83,14 @@ export default function AllProperties() {
                 <div className="">
                     <h2 className="text-xl font-bold">Search by Location</h2>
                     <form onSubmit={handleSearch}>
-                        <label className="input input-bordered flex items-center gap-2">
-                            <input type="text" name="search" className="grow" placeholder="Search" />
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
+                        <label className="flex items-center gap-2">
+                            <input type="text" name="search" placeholder="Search"
+                                value={searchText.search}
+                                onChange={handleSearchChange}
+                                className="grow" />
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70">
+                                <path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" />
+                            </svg>
                         </label>
                     </form>
                 </div>
@@ -91,7 +99,7 @@ export default function AllProperties() {
                         <label className="label">
                             <h3 className="font-bold">filter by Price Range</h3>
                         </label>
-                        <select onChange={handlePriceChange} name="category" className="select select-bordered w-fit">
+                        <select onChange={handlePriceChange} name="category" className="w-fit">
                             <option value="All">All</option>
                             <option value="0-1000">0-1000</option>
                             <option value="1001-10000">1001-10000</option>

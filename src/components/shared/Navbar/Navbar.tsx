@@ -3,10 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { signOut, useSession } from "next-auth/react";
+import axios from "axios";
 
 interface User {
     _id: string;
@@ -44,10 +45,12 @@ export default function Navbar() {
     const pathname = usePathname()
     const [dbUser, setDbUser] = useState<User>();
 
-    // useEffect(() => {
-    //     axios.get(`https://dream-dwellings-server.vercel.app/user?email=${'agent@gmail.com'}`)
-    //         .then(res => console.log(res.data))
-    // }, [])
+    useEffect(() => {
+        axios.get(`https://dream-dwellings-server.vercel.app/user?email=${'agent@gmail.com'}`)
+            .then(res => {
+                setDbUser(res.data)
+            })
+    }, [])
 
 
     // const { user, logOut } = useAuth();

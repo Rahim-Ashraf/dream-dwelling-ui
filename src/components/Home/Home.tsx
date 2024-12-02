@@ -13,39 +13,31 @@ export default function Home() {
 
     return (
         <div>
-            <div className="hero min-h-screen hero-clip" style={{ backgroundImage: 'url(https://i.ibb.co.com/jbvp5nt/bangkok.jpg)' }}>
-                <div className="hero-overlay bg-gradient-to-t from-[#0044aa] via-[#0044aa80] to-[#14b8a640]"></div>
+            <div className="bg-[url('/assets/hero-bg.jpg')] hero-clip min-h-screen relative bg-cover flex items-center justify-center">
+                <div className="absolute w-full h-full top-0 bg-gradient-to-t from-[#0060f0fa] via-[#002864ca] to-[#1670808a]"></div>
 
-                <div className="text-center text-gray-100 max-w-xl mx-auto">
+                <div className="relative text-center text-gray-100 max-w-xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 2 }}
                     >
-                        <h1 className="mb-5 text-5xl font-bold">Hello there</h1>
+                        <h1 className="mb-8 text-5xl font-bold">Hello there</h1>
                     </motion.div>
                     <motion.div
                         initial={{ opacity: 0, x: 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 2 }}
                     >
-                        <p className="mb-5">At Dream Dwelling, we help you find more than just a house—we help you discover the perfect home. With a curated selection of top-tier properties and personalized services, your dream home is just a click away. Begin your journey today and experience the difference with Dream Dwelling</p>
+                        <p className="mb-12">At Dream Dwelling, we help you find more than just a house—we help you discover the perfect home. With a curated selection of top-tier properties and personalized services, your dream home is just a click away. Begin your journey today and experience the difference with Dream Dwelling</p>
                     </motion.div>
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 2 }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
+                        className="w-fit mx-auto"
                     >
-                        <Link href="/all-properties">
-                            <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                <button className="btn border-none bg-gradient-to-br from-teal-500 to-[#0060f0] transition delay-100 text-white">Get Started</button>
-                            </motion.div>
-                        </Link>
+                        <Link href="/all-properties"
+                            className="px-8 py-4 rounded bg-gradient-to-br from-teal-500 to-[#0060f0] text-white">Get Started</Link>
                     </motion.div>
                 </div>
             </div>

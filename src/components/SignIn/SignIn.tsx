@@ -1,27 +1,28 @@
 "use client"
 
-import axios from "axios";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-// import { useRouter } from "next/router";
+import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Swal from "sweetalert2";
 
 export default function SignIn() {
-    // const { emailLogin, googleLogin } = useAuth();
+    const [formData, setFormData] = useState({ email: "", password: "" })
     const router = useRouter();
 
-    const handleEmailLogin = async (e) => {
+    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }))
+    }
+    const handleEmailLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        const email = e.target.email.value;
-        const password = e.target.password.value;
         // const credentials = { email, password, redirect: false,}
 
         const res = await signIn("credentials", {
             redirect: false,
-            email,
-            password,
+            email: formData.email,
+            password: formData.password,
             callbackUrl: "/", // Redirect path after login
         });
         if (res?.ok) {
@@ -33,6 +34,7 @@ export default function SignIn() {
                 timer: 1500
             });
             console.log(res)
+            setFormData({ email: '', password: '' })
             router.push(res.url || '/');
         } else {
             Swal.fire({
@@ -79,6 +81,8 @@ export default function SignIn() {
                         Email
                     </label>
                     <input type="email" name="email" placeholder="email" required
+                        onChange={handleFormChange}
+                        value={formData.email}
                         className="p-2 border rounded-lg w-full" />
                 </div>
                 <div className="space-y-2">
@@ -86,6 +90,8 @@ export default function SignIn() {
                         Password
                     </label>
                     <input type="password" name="password" placeholder="password" required
+                        onChange={handleFormChange}
+                        value={formData.password}
                         className="p-2 border rounded-lg w-full" />
                 </div>
                 <div>

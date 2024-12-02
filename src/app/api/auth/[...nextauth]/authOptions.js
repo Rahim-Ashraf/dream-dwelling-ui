@@ -1,7 +1,6 @@
 
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import Swal from "sweetalert2";
+// import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
   providers: [

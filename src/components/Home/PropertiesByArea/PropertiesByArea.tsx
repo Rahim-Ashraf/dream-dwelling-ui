@@ -13,7 +13,7 @@ export default function PropertiesByArea() {
                     <div className="relative rounded-lg md:rounded-none md:rounded-l-lg overflow-hidden">
                         <div className="absolute w-full h-full bg-slate-800 bg-opacity-50"></div>
                         <div>
-                            <Image src="https://i.ibb.co.com/D4DhyJs/london.jpg"
+                            <Image src="/assets/properties-by-area/london.jpg"
                                 alt="" width={600} height={600} />
                         </div>
                         <div className="absolute bottom-[5%] left-[25%]">
@@ -30,7 +30,7 @@ export default function PropertiesByArea() {
                     <div className="relative">
                         <div className="absolute w-full h-full bg-slate-800 bg-opacity-50"></div>
                         <div>
-                            <Image src="https://i.ibb.co.com/dpSGnHz/las-vagas.jpg"
+                            <Image src="/assets/properties-by-area/las-vegas.jpg"
                                 alt="" width={600} height={600} />
                         </div>
                         <div className="absolute bottom-[5%] left-[25%]">
@@ -47,7 +47,7 @@ export default function PropertiesByArea() {
                     <div className="relative">
                         <div className="absolute w-full h-full bg-slate-800 bg-opacity-50"></div>
                         <div>
-                            <Image src="https://i.ibb.co.com/MfF4f4f/paris.jpg"
+                            <Image src="/assets/properties-by-area/paris.jpg"
                                 alt="" width={600} height={600} />
                         </div>
                         <div className="absolute bottom-[5%] left-[25%]">
@@ -64,7 +64,7 @@ export default function PropertiesByArea() {
                     <div className="relative rounded-lg md:rounded-none md:rounded-r-lg overflow-hidden">
                         <div className="absolute w-full h-full bg-slate-800 bg-opacity-50"></div>
                         <div>
-                            <Image src="https://i.ibb.co.com/yVntXPY/dubai.jpg"
+                            <Image src="/assets/properties-by-area/dubai.jpg"
                                 alt="" width={600} height={600} />
                         </div>
                         <div className="absolute bottom-[5%] left-[25%]">
