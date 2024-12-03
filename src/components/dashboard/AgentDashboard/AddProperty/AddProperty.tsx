@@ -3,7 +3,7 @@
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import Swal from "sweetalert2";
 
 interface UserType {
@@ -20,7 +20,20 @@ export default function AddProperty() {
     const axiosSecure = useAxiosSecure();
     const [addPropertyLoading, setAddPropertyLoading] = useState(false);
 
-    const handleAddProperty = async (e) => {
+    const [formData, setFormData] = useState({
+        property_title: "",
+        property_location: "",
+        agent_name: "",
+        agent_email: "",
+        price_range_from: "",
+        price_range_to: "",
+    })
+
+    const handlePropertyChange = (e: ChangeEvent<HTMLFormElement>) => {
+        const { name, value } = e.target
+        setFormData((prev) => ({ ...prev, [name]: value }))
+    }
+    const handleAddProperty = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setAddPropertyLoading(true);
 
@@ -36,19 +49,22 @@ export default function AddProperty() {
             return;
         }
 
-        const form = e.target;
-        const property_title = form.property_title.value;
-        const property_location = form.property_location.value;
-        const agent_name = form.agent_name.value;
-        const agent_email = form.agent_email.value;
-        const price_range_from = form.price_range_from.value;
-        const price_range_to = form.price_range_to.value;
+        const property_title = formData.property_title
+        const property_location = formData.property_location
+        const agent_name = formData.agent_name
+        const agent_email = formData.agent_email
+        const price_range_from = formData.price_range_from
+        const price_range_to = formData.price_range_to
         const price_range = `${price_range_from}-${price_range_to}`;
-        const image = form.property_image.files[0];
-        const formData = new FormData();
-        formData.set('key', 'c2fde89598db76e7697f8f2bf3f338ec')
-        formData.append("image", image)
-        const res = await axios.post("https://api.imgbb.com/1/upload", formData)
+
+        const target = e.target as typeof e.target & {
+            property_image: { files: FileList };
+        };
+        const image = target.property_image.files[0];
+        const imgData = new FormData();
+        imgData.set('key', 'c2fde89598db76e7697f8f2bf3f338ec')
+        imgData.append("image", image)
+        const res = await axios.post("https://api.imgbb.com/1/upload", imgData)
         const property_image = res.data.data.image.url;
 
         const data = {
@@ -72,22 +88,25 @@ export default function AddProperty() {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                form.property_title.value = "";
-                form.property_location.value = "";
-                form.price_range_from.value = "";
-                form.price_range_to.value = "";
-                form.property_image.value = "";
+                setFormData({
+                    property_title: "",
+                    property_location: "",
+                    agent_name: "",
+                    agent_email: "",
+                    price_range_from: "",
+                    price_range_to: "",
+                })
             })
     }
 
     return (
         <div className="card shrink-0 w-full max-w-6xl mx-auto shadow-2xl bg-base-100">
-            <form onSubmit={handleAddProperty} className="card-body" >
+            <form onSubmit={handleAddProperty} onChange={handlePropertyChange}>
                 <div className="form-control w-full">
                     <label className="label">
                         <span className="label-text font-semibold">Property title</span>
                     </label>
-                    <input name="property_title" placeholder="Property Title" required
+                    <input placeholder="Property Title" required value={formData.property_title}
                         className="input input-bordered" />
 
                 </div>
@@ -95,7 +114,7 @@ export default function AddProperty() {
                     <label className="label">
                         <span className="label-text font-semibold">Property Location</span>
                     </label>
-                    <input name="property_location" placeholder="Property Location" required
+                    <input placeholder="Property Location" required value={formData.property_location}
                         className="input input-bordered h-16" />
                 </div>
                 <div>
@@ -105,14 +124,14 @@ export default function AddProperty() {
                             <label className="label">
                                 <span className="label-text font-semibold"> from</span>
                             </label>
-                            <input type="number" name="price_range_from" placeholder="Min price" required
+                            <input type="number" placeholder="Min price" required value={formData.price_range_from}
                                 className="input input-bordered" />
                         </div>
                         <div className="form-control w-full">
                             <label className="label">
                                 <span className="label-text font-semibold">To</span>
                             </label>
-                            <input type="number" name="price_range_to" placeholder="Max Price" required
+                            <input type="number" placeholder="Max Price" required value={formData.price_range_to}
                                 className="input input-bordered" />
                         </div>
                     </div>
@@ -121,7 +140,7 @@ export default function AddProperty() {
                     <label className="label">
                         <span className="label-text font-semibold">Property image</span>
                     </label>
-                    <input type="file" name="property_image" required
+                    <input type="file" required
                         className="file-input file-input-bordered h-16" />
                 </div>
                 <div className="md:flex gap-6">
@@ -129,14 +148,14 @@ export default function AddProperty() {
                         <label className="label">
                             <span className="label-text font-semibold">Agent name</span>
                         </label>
-                        <input name="agent_name" defaultValue={user?.name || ""} disabled
+                        <input defaultValue={user?.name || ""} disabled
                             className="input input-bordered" required />
                     </div>
                     <div className="form-control w-full">
                         <label className="label">
                             <span className="label-text font-semibold">Agent email</span>
                         </label>
-                        <input name="agent_email" defaultValue={user?.email || ""} disabled
+                        <input defaultValue={user?.email || ""} disabled
                             className="input input-bordered" required />
                     </div>
                 </div>

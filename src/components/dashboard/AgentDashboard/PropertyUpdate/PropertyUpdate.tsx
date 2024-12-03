@@ -2,7 +2,7 @@
 
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 interface PropertyType {
@@ -33,21 +33,36 @@ export default function PropertyUpdate({ id }: { id: string }) {
     const price_range_to = property?.price_range?.split('-')[1];
     // console.log(price_range_from)
 
-    const handleUpdateProperty = async (e) => {
+    const [formData, setFormData] = useState({
+        property_title: "",
+        property_location: "",
+        price_range_from: "",
+        price_range_to: "",
+    })
+    const handlePropertyChange = (e: ChangeEvent<HTMLFormElement>) => {
+        const { name, value } = e.target
+        setFormData((prev) => ({ ...prev, [name]: value }))
+    }
+
+    const handleUpdateProperty = async (e: FormEvent) => {
         e.preventDefault();
         setUpdatePropertyLoading(true);
 
-        const form = e.target;
-        const property_title = form.property_title.value;
-        const property_location = form.property_location.value;
-        const price_range_from = form.price_range_from.value;
-        const price_range_to = form.price_range_to.value;
+        const property_title = formData.property_title
+        const property_location = formData.property_location
+        const price_range_from = formData.price_range_from
+        const price_range_to = formData.price_range_to
         const price_range = `${price_range_from}-${price_range_to}`;
-        const image = form.property_image.files[0];
-        const formData = new FormData();
-        formData.set('key', 'c2fde89598db76e7697f8f2bf3f338ec')
-        formData.append("image", image)
-        const res = await axios.post("https://api.imgbb.com/1/upload", formData)
+
+
+        const target = e.target as typeof e.target & {
+            property_image: { files: FileList };
+        };
+        const image = target.property_image.files[0];
+        const imgData = new FormData();
+        imgData.set('key', 'c2fde89598db76e7697f8f2bf3f338ec')
+        imgData.append("image", image)
+        const res = await axios.post("https://api.imgbb.com/1/upload", imgData)
         const property_image = res.data.data.image.url;
 
         const data = {
@@ -74,7 +89,8 @@ export default function PropertyUpdate({ id }: { id: string }) {
 
     return (
         <div className="card shrink-0 w-full max-w-6xl mx-auto shadow-2xl bg-base-100">
-            <form onSubmit={handleUpdateProperty} className="card-body" >
+            <form onSubmit={handleUpdateProperty} onChange={handlePropertyChange}
+                className="card-body" >
                 <div className="form-control w-full">
                     <label className="label">
                         <span className="label-text font-semibold">Property title</span>
