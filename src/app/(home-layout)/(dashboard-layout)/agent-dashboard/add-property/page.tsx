@@ -1,6 +1,7 @@
+import AddProperty from "@/components/dashboard/AgentDashboard/AddProperty/AddProperty";
 
 export default function page() {
   return (
-    <div>page</div>
+    <AddProperty />
   )
 }
