@@ -17,7 +17,7 @@ export default function MyProfile() {
         <div className="text-center bg-gradient-to-br from-teal-500 to-[#0060f0] bg-opacity-20 rounded-lg p-6">
             <div className="avatar">
                 <div className="w-24 rounded-full">
-                    <img src={user?.image} />
+                    <img src={"/boy.png"} />
                 </div>
             </div>
             <h2 className="font-bold text-2xl text-white">Name: {user?.name}</h2>
