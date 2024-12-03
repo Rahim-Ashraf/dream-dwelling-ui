@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import PrimaryButton from "../shared/PrimaryButton/PrimaryButton";
-import Image from "next/image";
 
 interface Property {
     _id: string;
@@ -115,9 +114,9 @@ export default function AllProperties() {
                 {properties.map(property => <div key={property._id}
                     className="rounded-2xl overflow-hidden shadow-lg shadow-teal-200 flex flex-col justify-between">
                     <figure>
-                        <Image
+                        <img
                             src={property.property_image}
-                            alt="" width={600} height={600} />
+                            alt="" />
                     </figure>
                     <div className="p-4">
                         <div>
@@ -134,15 +133,15 @@ export default function AllProperties() {
                             <div className="flex justify-between">
                                 <p className="font-bold">Agent: {property.agent_name}</p>
                                 <div className="max-w-12">
-                                    <Image
+                                    <img
                                         src={property.agent_image}
-                                        alt="" width={50} height={50}
+                                        alt=""
                                         className="rounded-[50%]" />
                                 </div>
                             </div>
                         </div>
                         <div className="pt-4">
-                            <Link href={`/details/${property._id}`}>
+                            <Link href={`/property-details/${property._id}`}>
                                 <PrimaryButton btnText={"Details"}></PrimaryButton>
                             </Link>
                         </div>

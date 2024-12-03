@@ -1,7 +1,6 @@
 "use client"
 
 import axios from "axios";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaArrowTrendUp, FaLocationDot } from "react-icons/fa6";
@@ -48,8 +47,8 @@ export default function Advertisements() {
             {advertisements.map(advertisement => <div key={advertisement._id}
                 className="bg-[#0066ff] bg-opacity-10 p-4 shadow-lg shadow-teal-200 rounded-lg space-y-4 flex flex-col justify-between gap-4">
                 <figure>
-                    <Image src={advertisement.property_image}
-                        alt="" width={600} height={600}
+                    <img src={advertisement.property_image}
+                        alt=""
                         className="rounded-xl border" />
                 </figure>
                 <div className="space-y-4">
@@ -61,7 +60,7 @@ export default function Advertisements() {
                         <p className="font-semibold">${advertisement.price_range}</p>
                     </div>
                     <div className="my-auto">
-                        <Link href={`/details/${advertisement.property_id}`}>
+                        <Link href={`/property-details/${advertisement.property_id}`}>
                             <PrimaryButton btnText={"View"} BtnIcon={FaArrowTrendUp}></PrimaryButton>
                         </Link>
                     </div>

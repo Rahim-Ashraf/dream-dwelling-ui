@@ -1,5 +1,6 @@
 "use client"
 
+import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,6 +9,7 @@ import { FcGoogle } from "react-icons/fc";
 import Swal from "sweetalert2";
 
 export default function SignIn() {
+    const axiosSecure=useAxiosSecure()
     const [formData, setFormData] = useState({ email: "", password: "" })
     const router = useRouter();
 
@@ -34,6 +36,10 @@ export default function SignIn() {
                 timer: 1500
             });
             console.log(res)
+            axiosSecure.post('/jwt', { email: formData.email })
+                .then((res) => {
+                    localStorage.setItem("access-token", res.data.token)
+                })
             setFormData({ email: '', password: '' })
             router.push(res.url || '/');
         } else {
