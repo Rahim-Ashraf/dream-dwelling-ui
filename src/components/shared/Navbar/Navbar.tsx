@@ -46,7 +46,7 @@ export default function Navbar() {
     const [dbUser, setDbUser] = useState<User>();
 
     useEffect(() => {
-        axios.get(`https://dream-dwellings-server.vercel.app/user?email=${'agent@gmail.com'}`)
+        axios.get(`https://dream-dwellings-server.vercel.app/user?email=${'user@one.com'}`)
             .then(res => {
                 setDbUser(res.data)
             })
