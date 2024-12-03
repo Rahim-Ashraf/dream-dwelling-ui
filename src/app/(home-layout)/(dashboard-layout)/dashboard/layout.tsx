@@ -1,4 +1,4 @@
-import DashboardNav from "@/components/dashboard/dashboardShared/DashboardNav/DashboardNav";
+import DashboardNav from "@/components/dashboard/Dashboard/DashboardNav/DashboardNav";
 
 export default function layout({
     children
