@@ -21,6 +21,7 @@ export const authOptions = {
   pages: {
     signIn: "/signin", // Custom login page
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default authOptions;

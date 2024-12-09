@@ -4,7 +4,7 @@ import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Swal from "sweetalert2";
 
@@ -13,13 +13,12 @@ export default function SignIn() {
     const [formData, setFormData] = useState({ email: "", password: "" })
     const router = useRouter();
 
-    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }))
     }
-    const handleEmailLogin = async (e: React.FormEvent) => {
+    const handleEmailLogin = async (e: FormEvent) => {
         e.preventDefault();
-        // const credentials = { email, password, redirect: false,}
 
         const res = await signIn("credentials", {
             redirect: false,
@@ -35,7 +34,7 @@ export default function SignIn() {
                 showConfirmButton: false,
                 timer: 1500
             });
-            console.log(res)
+            
             axiosSecure.post('/jwt', { email: formData.email })
                 .then((res) => {
                     localStorage.setItem("access-token", res.data.token)
