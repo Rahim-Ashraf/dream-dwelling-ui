@@ -1,7 +1,7 @@
 "use client"
 
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -9,9 +9,11 @@ import { FcGoogle } from "react-icons/fc";
 import Swal from "sweetalert2";
 
 export default function SignIn() {
-    const axiosSecure=useAxiosSecure()
+    const axiosSecure = useAxiosSecure()
     const [formData, setFormData] = useState({ email: "", password: "" })
     const router = useRouter();
+    const { data: session } = useSession();
+
 
     const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -34,7 +36,7 @@ export default function SignIn() {
                 showConfirmButton: false,
                 timer: 1500
             });
-            
+
             axiosSecure.post('/jwt', { email: formData.email })
                 .then((res) => {
                     localStorage.setItem("access-token", res.data.token)
@@ -53,6 +55,30 @@ export default function SignIn() {
     }
 
     const handleGoogleLogin = () => {
+        signIn('google', { callbackUrl: '/' })
+            .then(() => {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Loged In Successfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                axiosSecure.post('/jwt', { email: session?.user?.email })
+                    .then((res) => {
+                        localStorage.setItem("access-token", res.data.token)
+                    })
+            })
+            .catch((error) => {
+                console.error('Sign-in failed:', error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Login failed",
+                    confirmButtonText: "Try again",
+                    confirmButtonColor: "#0060f0",
+                });
+            });
         // googleLogin()
         //     .then((res) => {
         //         Swal.fire({
@@ -111,7 +137,7 @@ export default function SignIn() {
             <div className="flex justify-between">
                 <div>
                     <span className="font-bold">New here?</span>
-                    <Link href="/register" className="text-blue-600 font-bold"> Register Now</Link>
+                    <Link href="/signup" className="text-blue-600 font-bold"> Register Now</Link>
                 </div>
                 <div>
                     <span className="font-bold">Go to </span><Link href="/" className="px-4 py-2 rounded bg-gradient-to-br from-teal-500 to-[#0060f0] text-white font-semibold"> Home Page</Link>
