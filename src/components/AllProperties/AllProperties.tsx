@@ -1,10 +1,8 @@
 "use client"
 
 import axios from "axios";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaLocationDot } from "react-icons/fa6";
-import PrimaryButton from "../shared/PrimaryButton/PrimaryButton";
+import PropertyCard from "./PropertyCard";
 
 interface Property {
     _id: string;
@@ -111,42 +109,16 @@ export default function AllProperties() {
             </div>
             <h1 className="text-5xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-br from-teal-500 to-[#0060f0] my-6">All properties </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {properties.map(property => <div key={property._id}
-                    className="rounded-2xl overflow-hidden shadow-lg shadow-teal-200 flex flex-col justify-between">
-                    <figure>
-                        <img
-                            src={property.property_image}
-                            alt="" />
-                    </figure>
-                    <div className="p-4">
-                        <div>
-                            <h2 className="font-bold text-2xl mb-4">{property.property_title}</h2>
-                            <div className="flex justify-between">
-                                <div className="flex gap-2 items-center text-lg font-bold">
-                                    <FaLocationDot />
-                                    <p>{property.property_location}</p>
-                                </div>
-                                <p className="font-bold">Status: <span className="text-emerald-600">{property.verification_status}</span></p>
-                            </div>
-                            <p className="font-bold ml-1"><span className="text-transparent bg-clip-text bg-gradient-to-br from-teal-500 to-[#0060f0]">${property.price_range}</span></p>
-                            <div className="divider"></div>
-                            <div className="flex justify-between">
-                                <p className="font-bold">Agent: {property.agent_name}</p>
-                                <div className="max-w-12">
-                                    <img
-                                        src={property.agent_image}
-                                        alt=""
-                                        className="rounded-[50%]" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="pt-4">
-                            <Link href={`/property-details/${property._id}`}>
-                                <PrimaryButton btnText={"Details"}></PrimaryButton>
-                            </Link>
-                        </div>
-                    </div>
-                </div>)}
+                {properties.map(property => <PropertyCard key={property._id}
+                    _id={property._id}
+                    property_image={property.property_image}
+                    property_title={property.property_title}
+                    property_location={property.property_location}
+                    verification_status={property.verification_status}
+                    price_range={property.price_range}
+                    agent_name={property.agent_name}
+                    agent_image={property.agent_image} />
+                )}
             </div>
         </div>
     )

@@ -1,3 +1,5 @@
+"use client"
+
 import PrimaryButton from "@/components/shared/PrimaryButton/PrimaryButton";
 import { motion } from "framer-motion";
 import { AiOutlinePlayCircle } from "react-icons/ai";

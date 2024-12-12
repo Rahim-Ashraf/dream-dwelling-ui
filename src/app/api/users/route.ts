@@ -1,13 +1,11 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import User from "@/models/User";
-import type { NextApiRequest } from "next";
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: Request) {
     try {
-        const body = await req.body;
-        const userData = body.formData;
-
+        const userData = await req.json();
+        console.log("body",userData)
         //Confirm data exists
         if (!userData?.email || !userData.password) {
             return NextResponse.json(
@@ -27,7 +25,7 @@ export async function POST(req: NextApiRequest) {
 
         const hashPassword = await bcrypt.hash(userData.password, 10);
         userData.password = hashPassword;
-        userData.role="user";
+        userData.role = "user";
 
         await User.create(userData);
         return NextResponse.json({ message: "Signed up successfully" }, { status: 201 });

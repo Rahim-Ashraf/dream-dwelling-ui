@@ -1,10 +1,8 @@
 "use client"
 
 import axios from "axios";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaArrowTrendUp, FaLocationDot } from "react-icons/fa6";
-import PrimaryButton from "../../shared/PrimaryButton/PrimaryButton";
+import AdvertisementCard from "./AdvertisementCard";
 
 interface Property {
     _id: string;
@@ -44,28 +42,12 @@ export default function Advertisements() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {/* advertisement cards */}
-            {advertisements.map(advertisement => <div key={advertisement._id}
-                className="bg-[#0066ff] bg-opacity-10 p-4 shadow-lg shadow-teal-200 rounded-lg space-y-4 flex flex-col justify-between gap-4">
-                <figure>
-                    <img src={advertisement.property_image}
-                        alt=""
-                        className="rounded-xl border" />
-                </figure>
-                <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                        <div className="flex gap-2 items-center text-xl">
-                            <FaLocationDot className="text-gray-600" />
-                            <h2>{advertisement.property_location}</h2>
-                        </div>
-                        <p className="font-semibold">${advertisement.price_range}</p>
-                    </div>
-                    <div className="my-auto">
-                        <Link href={`/property-details/${advertisement.property_id}`}>
-                            <PrimaryButton btnText={"View"} BtnIcon={FaArrowTrendUp}></PrimaryButton>
-                        </Link>
-                    </div>
-                </div>
-            </div>)}
+            {advertisements.map(advertisement => <AdvertisementCard key={advertisement._id}
+                property_id={advertisement.property_id}
+                property_image={advertisement.property_image}
+                property_location={advertisement.property_location}
+                price_range={advertisement.price_range} />
+            )}
         </div>
     )
 }
