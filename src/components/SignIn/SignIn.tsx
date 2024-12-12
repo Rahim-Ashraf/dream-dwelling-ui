@@ -70,7 +70,7 @@ export default function SignIn() {
                     })
             })
             .catch((error) => {
-                console.error('Sign-in failed:', error);
+                console.error('Signin failed:', error);
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
@@ -79,27 +79,6 @@ export default function SignIn() {
                     confirmButtonColor: "#0060f0",
                 });
             });
-        // googleLogin()
-        //     .then((res) => {
-        //         Swal.fire({
-        //             position: "center",
-        //             icon: "success",
-        //             title: "Loged In Successfully",
-        //             showConfirmButton: false,
-        //             timer: 1500
-        //         });
-        //         axios.post("https://dream-dwellings-server.vercel.app/users", { email: res.user.email, userName: res.user.displayName })
-        //         router.push(prevRoute ? `${prevRoute}` : "/");
-        //     })
-        //     .catch(error => {
-        //         console.log(error)
-        //         Swal.fire({
-        //             icon: "error",
-        //             title: "Oops...",
-        //             text: "Login failed"
-        //         });
-
-        //     })
 
     }
 

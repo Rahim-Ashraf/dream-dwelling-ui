@@ -8,7 +8,6 @@ export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       profile(profile) {
-        console.log("Profile Google: ", profile);
         return profile
       },
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -38,7 +37,8 @@ export const authOptions: NextAuthOptions = {
                 id: foundUser._id || "",
                 name: foundUser.userName,
                 email: foundUser.email,
-                role: foundUser.role
+                role: foundUser.role,
+                image: foundUser.photoURI
               };
             }
           }
@@ -49,6 +49,14 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+
+  callbacks: {
+    async session({ session, user, token }) {
+      console.log("session", session, "token", token, "user", user)
+      return session;
+    },
+  },
+
   pages: {
     signIn: "/signin", // Custom login page
   },

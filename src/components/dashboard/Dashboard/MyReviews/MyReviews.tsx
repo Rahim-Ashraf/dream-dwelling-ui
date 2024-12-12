@@ -23,7 +23,6 @@ export default function MyReviews() {
     const axiosSecure = useAxiosSecure()
 
     const [myReviews, setMyReviews] = useState<ReviewType[]>([])
-    console.log(myReviews)
     useEffect(() => {
         axiosSecure.get(`/my-reviews?email=${user?.email}`)
             .then(res => setMyReviews(res.data))

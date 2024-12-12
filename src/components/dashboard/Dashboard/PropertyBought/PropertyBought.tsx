@@ -28,7 +28,6 @@ const PropertyBought = () => {
     const axiosSecure = useAxiosSecure()
 
     const [propertyBoughts, setPropertyBoughts] = useState<OfferType[]>([])
-    console.log(propertyBoughts)
     useEffect(() => {
         axiosSecure.get(`/property-bought?email=${user?.email}`)
             .then(res => setPropertyBoughts(res.data))

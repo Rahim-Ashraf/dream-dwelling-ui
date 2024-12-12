@@ -31,7 +31,6 @@ export default function PropertyUpdate({ id }: { id: string }) {
 
     const price_range_from = property?.price_range?.split('-')[0];
     const price_range_to = property?.price_range?.split('-')[1];
-    // console.log(price_range_from)
 
     const [formData, setFormData] = useState({
         property_title: "",

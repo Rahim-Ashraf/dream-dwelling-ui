@@ -26,7 +26,6 @@ export default function Wishlist() {
     const axiosSecure = useAxiosSecure()
 
     const [wishlists, setWishlists] = useState<WishlistType[]>([])
-    console.log(wishlists)
     useEffect(() => {
         axiosSecure.get(`/wishlists?email=${user?.email}`)
             .then(res => setWishlists(res.data))

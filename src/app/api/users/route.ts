@@ -5,7 +5,6 @@ import User from "@/models/User";
 export async function POST(req: Request) {
     try {
         const userData = await req.json();
-        console.log("body",userData)
         //Confirm data exists
         if (!userData?.email || !userData.password) {
             return NextResponse.json(

@@ -38,7 +38,7 @@ const Signup = () => {
                 photoURI = res.data.data.image.url;
             }
             catch (err) {
-                console.log("imgbb", err)
+                console.error("imgbb", err)
                 setRegisLoading(false)
             }
 
@@ -55,7 +55,7 @@ const Signup = () => {
                 setRegisLoading(false)
             })
             .catch(err => {
-                console.log("err", err)
+                console.error("signup err", err)
                 setRegisLoading(false)
             })
     }

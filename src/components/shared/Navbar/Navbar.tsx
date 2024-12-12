@@ -20,7 +20,7 @@ interface User {
 
 export default function Navbar() {
     const session = useSession();
-    console.log(session)
+    console.log(session.data)
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     // Variants for navbar animation
     const navbarVariants = {
@@ -116,7 +116,7 @@ export default function Navbar() {
                     <summary tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
                             <Image
-                                src="/boy.png"  //need to update url
+                                src={session.data.user?.image || "/boy.png"}  //need to update url
                                 alt="Tailwind CSS Navbar component"
                                 width={40}
                                 height={40}

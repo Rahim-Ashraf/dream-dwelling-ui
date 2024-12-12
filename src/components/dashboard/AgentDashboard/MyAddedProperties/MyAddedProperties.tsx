@@ -20,8 +20,8 @@ interface PropertyType {
 }
 
 export default function MyAddedProperties() {
-    const session = useSession()
-    const user = session.data?.user
+    const { data } = useSession()
+    const user = data?.user
     const axiosSecure = useAxiosSecure();
     const [myAddedProperties, setMyAddedProperties] = useState<PropertyType[]>([])
     useEffect(() => {
@@ -45,7 +45,7 @@ export default function MyAddedProperties() {
                 axiosSecure.delete(`/properties?id=${id}`)
                     .then(async (res) => {
                         if (res.data.deletedCount > 0) {
-                            
+
                             const refetchAddedProperties = await axiosSecure.get(`/my-added-properties?email=${user?.email}`)
                             setMyAddedProperties(refetchAddedProperties.data)
 
@@ -109,7 +109,9 @@ export default function MyAddedProperties() {
                         </div>
                         <div className="divider"></div>
                         <div className="flex justify-between">
-                            {property.verification_status !== "rejected" && <Link href={`/agent-dashboard/property-update/${property._id}`}><button className="btn bg-gradient-to-br from-teal-500 to-[#0060f0] text-white">Update</button></Link>}
+                            {property.verification_status !== "rejected" && <Link href={`/agent-dashboard/property-update/${property._id}`}>
+                                <button className="btn bg-gradient-to-br from-teal-500 to-[#0060f0] text-white">Update</button>
+                            </Link>}
                             <button onClick={() => handlepropertyDelete(property._id)} className="btn bg-red-600 text-white">Delete</button>
                         </div>
                     </div>
