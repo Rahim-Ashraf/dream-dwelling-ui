@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
         try {
           const foundUser = await User.findOne({ email: credentials?.email });
 
-          if (foundUser) {
+          if (foundUser && credentials?.password) {
             const match = await bcrypt.compare(
               credentials?.password,
               foundUser.password

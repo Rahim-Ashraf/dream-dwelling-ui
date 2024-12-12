@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { IoMdEyeOff } from "react-icons/io";
 import { FaEye } from "react-icons/fa";
 import Swal from "sweetalert2";
@@ -10,41 +10,48 @@ import Link from "next/link";
 
 const Signup = () => {
     const [showPass, setShowPass] = useState(true);
-    const [registerError, setRegisterError] = useState("")
     const [regisLoading, setRegisLoading] = useState(false)
 
-    const handleEmailRegister = async (e) => {
+    const [formData, setFormData] = useState({ email: "", password: "", userName: "" })
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }))
+    }
+    const [photoInput, setPhotoInput] = useState<{ photo: File | null }>({ photo: null });
+    const handlePhodoInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        setPhotoInput(prev => ({ ...prev, photo: file || null }));
+    }
+
+    const handleEmailRegister = async (e: FormEvent) => {
         e.preventDefault();
-        setRegisterError("");
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-        const name = e.target.name.value;
 
-        if (password.length < 6) {
-            setRegisterError("password should be atlest 6 charecter");
-            return
-        } else if (!/[A-Z]/.test(password)) {
-            setRegisterError("password should have atlast 1 capital letter");
-            return
-        } else if (!/[ !"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]/.test(password)) {
-            setRegisterError("password should have atlast 1 special charecter");
-            return
-        }
         setRegisLoading(true);
-        const photo = e.target.photo.files[0];
-        let photoURL = "";
+        const photo = photoInput.photo;
+        let photoURI = "";
         if (photo) {
-            const formData = new FormData()
-            formData.set('key', 'c2fde89598db76e7697f8f2bf3f338ec')
-            formData.append("image", photo)
-            const res = await axios.post("https://api.imgbb.com/1/upload", formData)
-            photoURL = res.data.data.image.url;
+            try {
+                const photoData = new FormData()
+                photoData.set('key', 'c2fde89598db76e7697f8f2bf3f338ec')
+                photoData.append("image", photo)
+                const res = await axios.post("https://api.imgbb.com/1/upload", photoData)
+                photoURI = res.data.data.image.url;
+            }
+            catch (err) {
+                console.log("imgbb", err)
+                setRegisLoading(false)
+            }
 
         }
-        console.log(photoURL)
-        axios.post("http://localhost:3000/api/users", { email, password, userName: name, photoURL })
-            .then(res => {
-                console.log(res)
+        axios.post("http://localhost:3000/api/users", { ...formData, photoURI })
+            .then(() => {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Registered Successfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
                 setRegisLoading(false)
             })
             .catch(err => {
@@ -61,21 +68,24 @@ const Signup = () => {
                     <label>
                         <span className="font-semibold">Name</span>
                     </label>
-                    <input type="text" name="name" placeholder="Name" required
+                    <input onChange={handleChange} value={formData.userName}
+                        type="text" name="userName" placeholder="Name" required
                         className="p-3 rounded-lg border w-full" />
                 </div>
                 <div>
                     <label>
                         <span className="font-semibold">Photo</span>
                     </label>
-                    <input type="file" name="photo" placeholder="Photo"
+                    <input onChange={handlePhodoInputChange}
+                        type="file" name="photo" placeholder="Photo"
                         className="w-full file:p-3 file:border-none file:bg-gray-700 file:text-white fle:font-semibold file:mr-2 border rounded-lg" />
                 </div>
                 <div>
                     <label>
                         <span className="font-semibold">Email</span>
                     </label>
-                    <input type="email" name="email" placeholder="email" required
+                    <input onChange={handleChange} value={formData.email}
+                        type="email" name="email" placeholder="email" required
                         className="p-3 rounded-lg border w-full" />
                 </div>
                 <div>
@@ -88,12 +98,10 @@ const Signup = () => {
                                 <IoMdEyeOff className="cursor-pointer w-12" />}
                         </span>
 
-                        <input type={showPass ? "password" : "text"} name="password" placeholder="password" required
+                        <input onChange={handleChange} value={formData.password}
+                            type={showPass ? "password" : "text"} name="password" placeholder="password" required
                             className="p-3 rounded-lg border w-full" />
                     </div>
-                    <p className="text-red-600">
-                        {registerError}
-                    </p>
                 </div>
                 <div>
                     <button type="submit" disabled={regisLoading} className="px-8 py-4 rounded-lg bg-gradient-to-br from-teal-500 to-[#0060f0] text-white w-full">Register</button>
