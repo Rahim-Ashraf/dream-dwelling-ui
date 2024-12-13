@@ -32,7 +32,6 @@ export const authOptions: NextAuthOptions = {
             if (match) {
               delete foundUser.password;
 
-              foundUser["role"] = "Unverified Email";
               return {
                 id: foundUser._id || "",
                 name: foundUser.userName,
@@ -51,8 +50,16 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async session({ session, user, token }) {
-      console.log("session", session, "token", token, "user", user)
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.role = token.role as string
+      }
       return session;
     },
   },

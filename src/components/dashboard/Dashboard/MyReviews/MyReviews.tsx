@@ -60,18 +60,18 @@ export default function MyReviews() {
 
     return (
         <div className="space-y-4">
-            {myReviews.map(review => <div key={review._id} className="card card-compact  bg-emerald-600 bg-opacity-10 shadow-lg shadow-teal-200 mx-4">
-                <div className="card-body">
-                    <div>
-                        <div className="flex gap-4 items-center">
-                            <h2 className="card-title">{review.property_title}</h2>
-                            <p className="font-semibold">{review.date}</p>
-                        </div>
-                        <p className="font-bold">Agent: {review.agent_name}</p>
-                        <p>{review.review_description}</p>
+            {myReviews.map(review => <div key={review._id}
+                className="p-4 rounded-lg  bg-emerald-600 bg-opacity-10 shadow-lg shadow-teal-200 mx-4 space-y-4">
+                <div>
+                    <div className="flex gap-4 items-center">
+                        <h2 className="text-xl font-bold">{review.property_title}</h2>
+                        <p>{review.date}</p>
                     </div>
-                    <button onClick={() => handleReviewDelete(review._id)} className="btn bg-red-600 text-white max-w-20">Delete</button>
+                    <p className="font-bold">Agent: {review.agent_name}</p>
+                    <p>{review.review_description}</p>
                 </div>
+                <button onClick={() => handleReviewDelete(review._id)}
+                    className="px-6 py-3 rounded-lg bg-red-600 text-white">Delete</button>
             </div>)}
         </div>
     )

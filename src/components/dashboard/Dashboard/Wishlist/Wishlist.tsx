@@ -62,9 +62,12 @@ export default function Wishlist() {
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {wishlists.map(wishlist => <div key={wishlist._id} className="card card-compact bg-base-100 shadow-lg shadow-teal-200">
-                <figure><img src={wishlist.property_image} alt="" /></figure>
-                <div className="card-body w-full">
+            {wishlists.map(wishlist => <div key={wishlist._id}
+                className="rounded-xl overflow-hidden shadow-lg shadow-teal-200">
+                <figure>
+                    <img src={wishlist.property_image} alt="" />
+                </figure>
+                <div className="w-full p-4">
                     <h2 className="text-2xl font-bold mb-4">{wishlist.property_title}</h2>
                     <div className="flex justify-between items-center font-bold">
                         <div>
@@ -80,14 +83,21 @@ export default function Wishlist() {
                             <p className="text-emerald-600">{wishlist.verification_status}</p>
                         </div>
                     </div>
-                    <div className="divider"></div>
+                    <hr className="my-8" />
                     <div className="flex justify-between items-center">
                         <p className="font-bold">Agent: {wishlist.agent_name}</p>
-                        <div className="max-w-10"><img className="rounded-[50%]" src={wishlist.agent_image} alt="" /></div>
+                        <div className="max-w-10">
+                            <img className="rounded-[50%]" src={wishlist.agent_image} alt="agent" />
+                        </div>
                     </div>
-                    <div className="divider"></div>
-                    <Link href={`/dashboard/make-offer/${wishlist.property_id}`}><button className="btn bg-gradient-to-br from-teal-500 to-[#0060f0] text-white w-full">Make an offer</button></Link>
-                    <button onClick={() => handleRemoveWishlist(wishlist._id)} className="btn bg-red-600 text-white">Remove</button>
+                    <hr className="my-8" />
+                    <div className="space-y-4">
+                        <Link href={`/dashboard/make-offer/${wishlist.property_id}`}>
+                            <button className="px-6 py-3 rounded-lg bg-gradient-to-br from-teal-500 to-[#0060f0] text-white w-full">Make an offer</button>
+                        </Link>
+                        <button onClick={() => handleRemoveWishlist(wishlist._id)} 
+                        className="px-6 py-3 rounded-lg bg-red-600 text-white w-full">Remove</button>
+                    </div>
                 </div>
             </div>)}
         </div>

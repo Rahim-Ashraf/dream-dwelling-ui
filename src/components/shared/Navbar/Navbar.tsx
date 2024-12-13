@@ -1,26 +1,17 @@
 "use client"
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { MouseEvent, useState } from "react";
 import { motion } from "framer-motion";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { signOut, useSession } from "next-auth/react";
-import axios from "axios";
+import Menu from '@mui/material/Menu';
 
-interface User {
-    _id: string;
-    email: string;
-    userName: string;
-    role: string;
-    password: string;
-    is_fraud: string;
-}
+
 
 export default function Navbar() {
     const session = useSession();
-    console.log(session.data)
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     // Variants for navbar animation
     const navbarVariants = {
@@ -43,15 +34,6 @@ export default function Navbar() {
     };
 
     const pathname = usePathname()
-    const [dbUser, setDbUser] = useState<User>();
-
-    useEffect(() => {
-        axios.get(`https://dream-dwellings-server.vercel.app/user?email=${'user@one.com'}`)
-            .then(res => {
-                setDbUser(res.data)
-            })
-    }, [])
-
 
     // const { user, logOut } = useAuth();
     // const { data: dbUser } = useQuery({
@@ -68,11 +50,29 @@ export default function Navbar() {
         <Link href="/all-properties" className={`${pathname === '/all-properties' ? "text-transparent bg-clip-text bg-gradient-to-br from-teal-500 to-[#0060f0]" : "text-gray-800"} font-bold`
         }>All properties</Link>
         {session.status === "authenticated" && <>
-            <Link href={dbUser?.role === "admin" ? "/admin-dashboard/my-profile" : dbUser?.role === "agent" ? "/agent-dashboard/my-profile" : "/dashboard/my-profile"}
-                className={`${pathname === `/${dbUser?.role}-dashboard/my-profile` ? "text-transparent bg-clip-text bg-gradient-to-br from-teal-500 to-[#0060f0]" : "text-gray-800"} font-bold`
+            <Link href={session?.data.user.role === "admin" ? "/admin-dashboard/my-profile"
+                :
+                session?.data.user.role === "agent" ? "/agent-dashboard/my-profile"
+                    :
+                    "/dashboard/my-profile"}
+                className={`${pathname.includes('/dashboard') || pathname.includes('/agent-dashboard') || pathname.includes('/admin-dashboard') ? "text-transparent bg-clip-text bg-gradient-to-br from-teal-500 to-[#0060f0]"
+                    :
+                    "text-gray-800"} font-bold`
                 }>Dashboard</Link>
         </>}
     </>
+
+
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     return (
         <div className="px-4 relative py-4 flex justify-between items-center">
             <div className="flex gap-4 items-center">
@@ -82,12 +82,13 @@ export default function Navbar() {
                         className="absolute top-0 right-2 z-20 text-2xl"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                     >
-                        {isMenuOpen ? <AiOutlineClose className="text-[#FD7E72]" /> : <AiOutlineMenu className="text-gray-600" />}
+                        {isMenuOpen ? <AiOutlineClose className="text-teal-500" />
+                            : <AiOutlineMenu className="text-gray-600" />}
                     </button>
 
                     {/* Navbar */}
                     <motion.div
-                        className="fixed top-0 left-0 w-full h-full bg-[#FED4D0] text-[#4F0D25] z-10 px-4 py-8 overflow-scroll"
+                        className="fixed top-0 left-0 w-full h-full bg-gray-200 text-[#4F0D25] z-10 px-4 py-8 overflow-scroll"
                         initial="closed"
                         animate={isMenuOpen ? "open" : "closed"}
                         variants={navbarVariants}
@@ -112,22 +113,39 @@ export default function Navbar() {
                 </div>
             </div>
             <div>
-                {session.status === "authenticated" ? <details className="dropdown dropdown-end">
-                    <summary tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                        <div className="w-10 rounded-full">
-                            <Image
+
+                {session.status === "authenticated" ? <div>
+                    <button
+                        id="basic-button"
+                        aria-controls={open ? 'basic-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClick}
+                    >
+                        <div className="w-10 rounded-full overflow-hidden">
+                            <img
                                 src={session.data.user?.image || "/boy.png"}  //need to update url
-                                alt="Tailwind CSS Navbar component"
-                                width={40}
-                                height={40}
+                                alt="user"
                             />
                         </div>
-                    </summary >
-                    <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><button onClick={() => signOut()} className="bg-gradient-to-br from-rose-400 to-red-500 text-white font-semibold px-8 py-4 rounded">Logout</button></li>
-                    </ul>
-                </details>
-                    : <Link href="/signin"
+                    </button>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        <div className="px-4 py-2 shadow">
+                            <button onClick={() => signOut()}
+                                className="bg-gradient-to-br from-rose-400 to-red-500 text-white font-semibold px-8 py-4 rounded">Logout</button>
+                        </div>
+                    </Menu>
+                </div>
+                    :
+                    <Link href="/signin"
                         className="bg-gradient-to-br from-teal-500 to-[#0060f0] text-white font-semibold px-8 py-4 rounded"
                     >Login</Link>}
             </div>
