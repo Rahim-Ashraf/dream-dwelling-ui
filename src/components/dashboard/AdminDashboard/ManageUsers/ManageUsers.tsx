@@ -84,15 +84,15 @@ export default function ManageUsers() {
                                     <>
                                         <div className="flex justify-end gap-2">
                                             <button onClick={() => handleMakeAdmin(user)}
-                                                className="btn btn-sm bg-gradient-to-br from-teal-500 to-[#0060f0] text-white">Make Admin</button>
+                                                className="px-2 py-1 rounded bg-gradient-to-br from-teal-500 to-[#0060f0] text-white">Make Admin</button>
                                             <button onClick={() => handleMakeagent(user)}
-                                                className="btn btn-errorf btn-sm bg-gradient-to-br from-teal-500 to-[#0060f0] text-white">Make Agent</button>
+                                                className="px-2 py-1 rounded bg-gradient-to-br from-teal-500 to-[#0060f0] text-white">Make Agent</button>
                                         </div>
                                         <div className="flex justify-end gap-2">
                                             {user.role === "agent" && <button onClick={() => handleMarkFraud(user)}
-                                                className="btn btn-errorf btn-sm btn-error">Mark as fraud</button>}
+                                                className="px-2 py-1 rounded bg-rose-400">Mark as fraud</button>}
                                             <button onClick={() => handleDeleteUser(user)}
-                                                className="btn btn-errorf btn-sm btn-error">Delete User</button>
+                                                className="px-2 py-1 rounded bg-rose-400">Delete User</button>
                                         </div>
                                     </>}
                             </td>

@@ -35,14 +35,10 @@ export default function Navbar() {
 
     const pathname = usePathname()
 
-    // const { user, logOut } = useAuth();
-    // const { data: dbUser } = useQuery({
-    //     queryKey: ["user"],
-    //     queryFn: async () => {
-    //         const res = await axiosPublic.get(`/user?email=${user.email}`);
-    //         return res.data;
-    //     }
-    // })
+    const handleSignout = () => {
+        localStorage.removeItem("access-token")
+        signOut()
+    }
 
     const menu = <>
         <Link href="/" className={`${pathname === '/' ? "text-transparent bg-clip-text bg-gradient-to-br from-teal-500 to-[#0060f0]" : "text-gray-800"} font-bold`
@@ -139,7 +135,7 @@ export default function Navbar() {
                         }}
                     >
                         <div className="px-4 py-2 shadow">
-                            <button onClick={() => signOut()}
+                            <button onClick={handleSignout}
                                 className="bg-gradient-to-br from-rose-400 to-red-500 text-white font-semibold px-8 py-4 rounded">Logout</button>
                         </div>
                     </Menu>

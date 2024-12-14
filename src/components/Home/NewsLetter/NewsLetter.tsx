@@ -6,11 +6,11 @@ import { AiOutlinePlayCircle } from "react-icons/ai";
 
 export default function NewsLetter() {
     return (
-        <div className="my-10 flex flex-col md:flex-row justify-between md:items-end max-w-screen-xl mx-auto p-4">
+        <div className="my-10 flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto p-4">
             <div className="w-full">
                 <motion.div
-                    initial={{ x: -100 }}
-                    whileInView={{ x: 0 }}
+                    initial={{ y: -100, opacity: 0.1 }}
+                    whileInView={{ y: 0, opacity: 1 }}
                     transition={{ duration: 2 }}
                 >
                     <div className="p-8 rounded-lg space-y-8">
@@ -39,8 +39,8 @@ export default function NewsLetter() {
             </div>
             <div className="w-full">
                 <motion.div
-                    initial={{ x: 100 }}
-                    whileInView={{ x: 0 }}
+                    initial={{ y: 100, opacity: 0.1 }}
+                    whileInView={{ y: 0, opacity: 1 }}
                     transition={{ duration: 2 }}
                 >
                     <div className="p-8 flex flex-col justify-center space-y-8">

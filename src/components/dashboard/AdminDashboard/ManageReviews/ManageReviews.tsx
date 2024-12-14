@@ -59,21 +59,22 @@ export default function ManageReviews() {
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {reviews.map(review => <div key={review._id} className=" shadow-lg shadow-teal-200">
-                <div className="card-body">
-                    <div className='grid grid-cols-4 gap-2'>
-                        <div className="w-full col-span-1">
-                            <img src={review.reviewer_image} alt={review.reviewer_name}
-                                className='rounded-full' />
-                        </div>
-                        <div className="col-span-3">
-                            <h2 className="card-title">Reviewer name: {review.reviewer_name}</h2>
-                            <h2 className="card-title">Reviewer email: {review.reviewer_email}</h2>
-                            <p>{review.review_description}</p>
-                        </div>
+            {reviews.map(review => <div key={review._id}
+                className="shadow-lg shadow-teal-200 p-4 rounded-lg flex flex-col justify-between space-y-4">
+                <div className='grid grid-cols-4 gap-2'>
+                    <div className="w-full col-span-1">
+                        <img src={review.reviewer_image} alt={review.reviewer_name}
+                            className='rounded-full' />
                     </div>
+                    <div className="col-span-3 space-y-2">
+                        <h2 className="font-semibold">Reviewer name: {review.reviewer_name}</h2>
+                        <h2 className="font-semibold">Reviewer email: {review.reviewer_email}</h2>
+                        <p>{review.review_description}</p>
+                    </div>
+                </div>
+                <div>
                     <button onClick={() => handleDeleteReview(review._id)}
-                        className="btn btn-error">Delete Review</button>
+                        className="px-4 py-2 w-full rounded bg-rose-400">Delete Review</button>
                 </div>
             </div>
             )}

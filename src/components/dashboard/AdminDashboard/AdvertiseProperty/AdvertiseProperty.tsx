@@ -61,7 +61,7 @@ export default function AdvertiseProperty() {
                 {/* head */}
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>ID</th>
                         <th>Image</th>
                         <th>Title</th>
                         <th>Price Range</th>
@@ -72,7 +72,7 @@ export default function AdvertiseProperty() {
                 <tbody>
                     {
                         properties.map((property, idx) => <tr key={property._id}>
-                            <th>{idx + 1}</th>
+                            <td>{idx + 1}</td>
                             <td>
                                 <div className="max-w-20">
                                     <img className="rounded-xl" src={property.property_image} alt="" />
@@ -81,7 +81,8 @@ export default function AdvertiseProperty() {
                             <td>{property.property_title}</td>
                             <td>{property.price_range}</td>
                             <td>{property.agent_name}</td>
-                            <td><button onClick={() => handleAdvertise(property)} className="btn btn-sm bg-gradient-to-br from-teal-500 to-[#0060f0] text-white">Advertise</button></td>
+                            <td><button onClick={() => handleAdvertise(property)}
+                                className="px-2 py-1 rounded bg-gradient-to-br from-teal-500 to-[#0060f0] text-white">Advertise</button></td>
                         </tr>)
                     }
                 </tbody>

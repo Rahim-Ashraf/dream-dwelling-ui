@@ -43,10 +43,10 @@ export default function ManageProperties() {
 
     return (
         <div className="overflow-x-auto">
-            <table className="table">
+            <table className="">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>ID</th>
                         <th>Property title</th>
                         <th>Property location</th>
                         <th>Agent name</th>
@@ -58,7 +58,7 @@ export default function ManageProperties() {
                 <tbody>
                     {
                         properties.map((property, idx) => <tr key={property._id}>
-                            <th>{idx + 1}</th>
+                            <td>{idx + 1}</td>
                             <td>{property.property_title}</td>
                             <td>{property.property_location}</td>
                             <td>{property.agent_name}</td>
@@ -72,8 +72,12 @@ export default function ManageProperties() {
                                     <button onClick={() => handleReject(property)}
                                         className="btn btn-errorf btn-sm btn-error"
                                     >Reject</button>
-                                </> :
-                                    <h2 className={property.verification_status === "verified" ? "text-emerald-600 font-bold" : property.verification_status === "rejected" ? "text-red-600 font-bold" : ""}
+                                </>
+                                    :
+                                    <h2 className={property.verification_status === "verified" ? "text-emerald-600 font-bold"
+                                        :
+                                        property.verification_status === "rejected" ? "text-red-600 font-bold"
+                                            : ""}
                                     >{property.verification_status}</h2>}
                             </td>
                         </tr>)
