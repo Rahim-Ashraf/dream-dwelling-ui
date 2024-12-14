@@ -3,6 +3,7 @@
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 interface UserType {
     _id: string;
@@ -26,27 +27,54 @@ export default function ManageUsers() {
 
     const handleMakeAdmin = (user: UserType) => {
         axiosSecure.patch(`/users?id=${user._id}`, { role: "admin" })
-            .then(async (res) => {
-                console.log(res.data)
-                const refectchUsers = await axiosSecure.get("/properties");
+            .then(async () => {
+                Swal.fire({
+                    icon: "success",
+                    title: `${user.userName} become admin`,
+                    showConfirmButton: false,
+                    timer: 1500,
+                })
+                const refectchUsers = await axiosSecure.get(`/users?email=${user?.email}`)
                 setUsers(refectchUsers.data)
             })
     }
     const handleMakeagent = (user: UserType) => {
         axiosSecure.patch(`/users?id=${user._id}`, { role: "agent" })
-            .then(async (res) => {
-                console.log(res.data)
-                const refectchUsers = await axiosSecure.get("/properties");
+            .then(async () => {
+                Swal.fire({
+                    icon: "success",
+                    title: `${user.userName} become agent`,
+                    showConfirmButton: false,
+                    timer: 1500,
+                })
+                const refectchUsers = await axiosSecure.get(`/users?email=${user?.email}`)
                 setUsers(refectchUsers.data)
             })
     }
     const handleDeleteUser = (user: UserType) => {
-        axiosSecure.delete(`/users?id=${user._id}`)
-            .then(async (res) => {
-                console.log(res.data)
-                const refectchUsers = await axiosSecure.get("/properties");
-                setUsers(refectchUsers.data)
-            })
+        Swal.fire({
+            title: "Are you sure?",
+            text: `You want to delete ${user.userName}`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.delete(`/users?id=${user._id}`)
+                    .then(async (res) => {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "User has been deleted.",
+                            icon: "success"
+                        });
+                        console.log(res.data)
+                        const refectchUsers = await axiosSecure.get(`/users?email=${user?.email}`)
+                        setUsers(refectchUsers.data)
+                    })
+            }
+        });
     }
     const handleMarkFraud = (user: UserType) => {
         axiosSecure.patch(`/fraud-users?id=${user._id}`, { is_fraud: "fraud" })
@@ -59,10 +87,10 @@ export default function ManageUsers() {
 
     return (
         <div className="overflow-x-auto">
-            <table className="table">
+            <table>
                 <thead>
-                    <tr>
-                        <th></th>
+                    <tr className="border-b">
+                        <th>ID</th>
                         <th>User name</th>
                         <th>User email</th>
                         <th>Role</th>
@@ -73,13 +101,18 @@ export default function ManageUsers() {
                 </thead>
                 <tbody>
                     {
-                        users.map((user, idx) => <tr key={user._id}>
-                            <th>{idx + 1}</th>
+                        users.map((user, idx) => <tr key={user._id}
+                            className="border-b">
+                            <td>{idx + 1}</td>
                             <td>{user.userName}</td>
                             <td>{user.email}</td>
                             <td className="font-bold">{user.role ? user.role : "User"}</td>
                             <td className="space-y-1">
-                                {user.is_fraud ? <h4 className="font-bold text-red">Fraud</h4>
+                                {user.is_fraud ? <div className="flex gap-2 items-center justify-center">
+                                    <h4 className="font-bold text-red">Fraud</h4>
+                                    <button onClick={() => handleDeleteUser(user)}
+                                        className="px-2 py-1 rounded bg-rose-400">Delete User</button>
+                                </div>
                                     :
                                     <>
                                         <div className="flex justify-end gap-2">

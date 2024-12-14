@@ -26,7 +26,7 @@ export default function SignIn() {
             redirect: false,
             email: formData.email,
             password: formData.password,
-            callbackUrl: "/", // Redirect path after login
+            callbackUrl: "/"
         });
         if (res?.ok) {
             Swal.fire({
@@ -36,7 +36,7 @@ export default function SignIn() {
                 showConfirmButton: false,
                 timer: 1500
             });
-
+            console.log(res)
             axiosSecure.post('/jwt', { email: formData.email })
                 .then((res) => {
                     localStorage.setItem("access-token", res.data.token)
@@ -55,7 +55,7 @@ export default function SignIn() {
     }
 
     const handleGoogleLogin = () => {
-        signIn('google', { callbackUrl: '/' })
+        signIn('google', { callbackUrl: "/" })
             .then(() => {
                 Swal.fire({
                     position: "center",

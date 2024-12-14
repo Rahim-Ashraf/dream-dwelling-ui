@@ -57,10 +57,10 @@ export default function AdvertiseProperty() {
 
     return (
         <div className="overflow-x-auto">
-            <table className="table">
+            <table>
                 {/* head */}
                 <thead>
-                    <tr>
+                    <tr className="border-b">
                         <th>ID</th>
                         <th>Image</th>
                         <th>Title</th>
@@ -71,7 +71,8 @@ export default function AdvertiseProperty() {
                 </thead>
                 <tbody>
                     {
-                        properties.map((property, idx) => <tr key={property._id}>
+                        properties.map((property, idx) => <tr key={property._id}
+                            className="border-b">
                             <td>{idx + 1}</td>
                             <td>
                                 <div className="max-w-20">

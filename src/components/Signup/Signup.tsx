@@ -6,9 +6,14 @@ import { FaEye } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axios from "axios";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
+import { useRouter } from "next/navigation";
 
 
 const Signup = () => {
+    const axiosSecure = useAxiosSecure()
+    const router = useRouter();
     const [showPass, setShowPass] = useState(true);
     const [regisLoading, setRegisLoading] = useState(false)
 
@@ -44,7 +49,7 @@ const Signup = () => {
 
         }
         axios.post("http://localhost:3000/api/users", { ...formData, photoURI })
-            .then(() => {
+            .then(async () => {
                 Swal.fire({
                     position: "center",
                     icon: "success",
@@ -52,10 +57,33 @@ const Signup = () => {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                setRegisLoading(false)
+
+                const res = await signIn("credentials", {
+                    redirect: false,
+                    email: formData.email,
+                    password: formData.password,
+                    callbackUrl: "/", // Redirect path after login
+                });
+                if (res?.ok) {
+                    setRegisLoading(false)
+                    axiosSecure.post('/jwt', { email: formData.email })
+                        .then((res) => {
+                            localStorage.setItem("access-token", res.data.token)
+                        })
+                    router.push(res.url || '/');
+                }
+
             })
             .catch(err => {
-                console.error("signup err", err)
+                console.log("signup err", err)
+                if (err.status === 409) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "Email already exist",
+                        text: "Please enter a new email"
+                    });
+                }
                 setRegisLoading(false)
             })
     }
@@ -104,7 +132,9 @@ const Signup = () => {
                     </div>
                 </div>
                 <div>
-                    <button type="submit" disabled={regisLoading} className="px-8 py-4 rounded-lg bg-gradient-to-br from-teal-500 to-[#0060f0] text-white w-full">Register</button>
+                    <button type="submit" disabled={regisLoading} className="px-8 py-4 rounded-lg bg-gradient-to-br from-teal-500 to-[#0060f0] text-white w-full">
+                        {regisLoading ? "Please wait..." : "Register"}
+                    </button>
                 </div>
             </form>
 

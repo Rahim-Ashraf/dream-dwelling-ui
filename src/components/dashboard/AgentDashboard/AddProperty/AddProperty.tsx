@@ -29,7 +29,7 @@ export default function AddProperty() {
         price_range_to: "",
     })
 
-    const handlePropertyChange = (e: ChangeEvent<HTMLFormElement>) => {
+    const handlePropertyChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setFormData((prev) => ({ ...prev, [name]: value }))
     }
@@ -100,66 +100,76 @@ export default function AddProperty() {
     }
 
     return (
-        <div className="card shrink-0 w-full max-w-6xl mx-auto shadow-2xl bg-base-100">
-            <form onSubmit={handleAddProperty} onChange={handlePropertyChange}>
-                <div className="form-control w-full">
-                    <label className="label">
-                        <span className="label-text font-semibold">Property title</span>
+        <div className="p-8 rounded-xl w-full max-w-6xl mx-auto shadow-2xl bg-slate-100">
+            <form onSubmit={handleAddProperty}
+            className="space-y-4">
+                <div className="w-full">
+                    <label>
+                        <span className="font-semibold">Property title</span>
                     </label>
-                    <input placeholder="Property Title" required value={formData.property_title}
-                        className="input input-bordered" />
+                    <input placeholder="Property Title" required
+                        onChange={handlePropertyChange}
+                        value={formData.property_title}
+                        className="border rounded-lg p-3 w-full" />
 
                 </div>
-                <div className="form-control w-full">
-                    <label className="label">
-                        <span className="label-text font-semibold">Property Location</span>
+                <div className="w-full">
+                    <label>
+                        <span className="font-semibold">Property Location</span>
                     </label>
-                    <input placeholder="Property Location" required value={formData.property_location}
-                        className="input input-bordered h-16" />
+                    <input placeholder="Property Location" required
+                        onChange={handlePropertyChange}
+                        value={formData.property_location}
+                        className="border rounded-lg p-3 w-full" />
                 </div>
                 <div>
                     <h4 className="font-bold text-">Price Range:</h4>
                     <div className="md:flex gap-6">
-                        <div className="form-control w-full">
-                            <label className="label">
-                                <span className="label-text font-semibold"> from</span>
+                        <div className="w-full">
+                            <label>
+                                <span className="font-semibold"> from</span>
                             </label>
-                            <input type="number" placeholder="Min price" required value={formData.price_range_from}
-                                className="input input-bordered" />
+                            <input type="number" placeholder="Min price" required
+                                onChange={handlePropertyChange}
+                                value={formData.price_range_from}
+                                className="border rounded-lg p-3 w-full" />
                         </div>
-                        <div className="form-control w-full">
-                            <label className="label">
-                                <span className="label-text font-semibold">To</span>
+                        <div className="w-full">
+                            <label>
+                                <span className="font-semibold">To</span>
                             </label>
-                            <input type="number" placeholder="Max Price" required value={formData.price_range_to}
-                                className="input input-bordered" />
+                            <input type="number" placeholder="Max Price" required
+                                onChange={handlePropertyChange}
+                                value={formData.price_range_to}
+                                className="border rounded-lg p-3 w-full" />
                         </div>
                     </div>
                 </div>
-                <div className="form-control w-full">
-                    <label className="label">
-                        <span className="label-text font-semibold">Property image</span>
+                <div className="w-full">
+                    <label>
+                        <span className="font-semibold">Property image</span>
                     </label>
                     <input type="file" required
-                        className="file-input file-input-bordered h-16" />
+                        className="w-full file:p-3 file:border-none file:bg-gray-700 file:text-white fle:font-semibold file:mr-2 border rounded-lg" />
                 </div>
                 <div className="md:flex gap-6">
-                    <div className="form-control w-full">
-                        <label className="label">
-                            <span className="label-text font-semibold">Agent name</span>
+                    <div className="w-full">
+                        <label>
+                            <span className="font-semibold">Agent name</span>
                         </label>
                         <input defaultValue={user?.name || ""} disabled
-                            className="input input-bordered" required />
+                            className="border rounded-lg p-3 w-full" required />
                     </div>
-                    <div className="form-control w-full">
-                        <label className="label">
-                            <span className="label-text font-semibold">Agent email</span>
+                    <div className="w-full">
+                        <label>
+                            <span className="font-semibold">Agent email</span>
                         </label>
                         <input defaultValue={user?.email || ""} disabled
-                            className="input input-bordered" required />
+                            className="border rounded-lg p-3 w-full" required />
                     </div>
                 </div>
-                <input className="btn bg-gradient-to-br from-teal-500 to-[#0060f0] text-white" type="submit" disabled={addPropertyLoading} value="Add Property" />
+                <input type="submit" disabled={addPropertyLoading} value="Add Property"
+                    className="px-6 py-3 rounded-lg w-full cursor-pointer bg-gradient-to-br from-teal-500 to-[#0060f0] text-white" />
             </form>
         </div>
     )

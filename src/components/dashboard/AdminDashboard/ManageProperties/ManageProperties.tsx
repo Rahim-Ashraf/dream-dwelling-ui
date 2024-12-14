@@ -43,9 +43,9 @@ export default function ManageProperties() {
 
     return (
         <div className="overflow-x-auto">
-            <table className="">
+            <table>
                 <thead>
-                    <tr>
+                    <tr className="border-b">
                         <th>ID</th>
                         <th>Property title</th>
                         <th>Property location</th>
@@ -57,7 +57,8 @@ export default function ManageProperties() {
                 </thead>
                 <tbody>
                     {
-                        properties.map((property, idx) => <tr key={property._id}>
+                        properties.map((property, idx) => <tr key={property._id}
+                            className="border-b">
                             <td>{idx + 1}</td>
                             <td>{property.property_title}</td>
                             <td>{property.property_location}</td>

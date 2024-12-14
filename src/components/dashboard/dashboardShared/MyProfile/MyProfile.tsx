@@ -1,10 +1,9 @@
-"use client"
+import authOptions from "@/app/api/auth/[...nextauth]/authOptions";
+import { getServerSession } from "next-auth";
 
-import { useSession } from "next-auth/react";
-
-export default function MyProfile() {
-    const session = useSession();
-    const user = session.data?.user
+export default async function MyProfile() {
+    const session = await getServerSession(authOptions);
+    const user = session?.user
     // const [dbUser, setDbUser] = useState()
     // useEffect(() => {
     //     axios.get(`https://dream-dwellings-server.vercel.app/user?email=${user?.email}`)
