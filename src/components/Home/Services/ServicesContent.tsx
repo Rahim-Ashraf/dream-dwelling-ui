@@ -16,7 +16,7 @@ function ServicesContent() {
                 <div className="p-8 shadow-lg shadow-teal-200 bg-blue-50 rounded-md space-y-4">
                     <PiBuilding className="text-[#E2837A] text-5xl" />
                     <h2 className="card-title">Buy A Property</h2>
-                    <p>get your own luxurious home by buying properties</p>
+                    <p>get your own luxurious home or apertment by buying properties.</p>
                 </div>
             </motion.div>
             <motion.div
