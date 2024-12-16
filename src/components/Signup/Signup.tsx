@@ -58,19 +58,19 @@ const Signup = () => {
                     timer: 1500
                 });
 
-                const res = await signIn("credentials", {
+                const authRes = await signIn("credentials", {
                     redirect: false,
                     email: formData.email,
                     password: formData.password,
                     callbackUrl: "/", // Redirect path after login
                 });
-                if (res?.ok) {
-                    setRegisLoading(false)
+                if (authRes?.ok) {
                     axiosSecure.post('/jwt', { email: formData.email })
                         .then((res) => {
                             localStorage.setItem("access-token", res.data.token)
+                            router.push(authRes.url || '/');
+                            setRegisLoading(false)
                         })
-                    router.push(res.url || '/');
                 }
 
             })
@@ -93,8 +93,9 @@ const Signup = () => {
             <form onSubmit={handleEmailRegister}
                 className="space-y-8">
                 <div>
-                    <label>
-                        <span className="font-semibold">Name</span>
+                    <label className="font-semibold">
+                        <span>Name</span>
+                        <span className="text-rose-600 text-xl">*</span>
                     </label>
                     <input onChange={handleChange} value={formData.userName}
                         type="text" name="userName" placeholder="Name" required
@@ -109,16 +110,18 @@ const Signup = () => {
                         className="w-full file:p-3 file:border-none file:bg-gray-700 file:text-white fle:font-semibold file:mr-2 border rounded-lg" />
                 </div>
                 <div>
-                    <label>
-                        <span className="font-semibold">Email</span>
+                    <label className="font-semibold">
+                        <span>Email</span>
+                        <span className="text-rose-600 text-xl">*</span>
                     </label>
                     <input onChange={handleChange} value={formData.email}
                         type="email" name="email" placeholder="email" required
                         className="p-3 rounded-lg border w-full" />
                 </div>
                 <div>
-                    <label>
-                        <span className="font-semibold">Password</span>
+                    <label className="font-semibold">
+                        <span>Password</span>
+                        <span className="text-rose-600 text-xl">*</span>
                     </label>
                     <div className="relative">
                         <span onClick={() => setShowPass(!showPass)}
@@ -132,8 +135,9 @@ const Signup = () => {
                     </div>
                 </div>
                 <div>
-                    <button type="submit" disabled={regisLoading} className="px-8 py-4 rounded-lg bg-gradient-to-br from-teal-500 to-[#0060f0] text-white w-full">
-                        {regisLoading ? "Please wait..." : "Register"}
+                    <button type="submit" disabled={regisLoading}
+                        className={`px-6 py-3 rounded w-full ${regisLoading ? "bg-slate-100 text-slate-800" : "bg-gradient-to-br from-teal-500 to-[#0060f0] text-white"}`}>
+                        {regisLoading ? "Loading..." : "Register"}
                     </button>
                 </div>
             </form>

@@ -71,8 +71,8 @@ export default function PropertyUpdate({ id }: { id: string }) {
             property_image,
         }
         axiosSecure.patch(`/properties?id=${property?._id}`, data)
-            .then(async (res) => {
-                console.log(res.data)
+            .then(async () => {
+                // console.log(res.data)
                 setUpdatePropertyLoading(false);
                 Swal.fire({
                     position: "center",

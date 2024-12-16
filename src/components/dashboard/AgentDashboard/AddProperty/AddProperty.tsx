@@ -78,8 +78,8 @@ export default function AddProperty() {
             verification_status: "pending",
         }
         axiosSecure.post("/properties", data)
-            .then(res => {
-                console.log(res.data)
+            .then(() => {
+                // console.log(res.data)
                 setAddPropertyLoading(false);
                 Swal.fire({
                     position: "center",

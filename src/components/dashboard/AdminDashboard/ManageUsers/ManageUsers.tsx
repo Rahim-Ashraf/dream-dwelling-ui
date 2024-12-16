@@ -63,13 +63,13 @@ export default function ManageUsers() {
         }).then((result) => {
             if (result.isConfirmed) {
                 axiosSecure.delete(`/users?id=${user._id}`)
-                    .then(async (res) => {
+                    .then(async () => {
                         Swal.fire({
                             title: "Deleted!",
                             text: "User has been deleted.",
                             icon: "success"
                         });
-                        console.log(res.data)
+                        // console.log(res.data)
                         const refectchUsers = await axiosSecure.get(`/users?email=${user?.email}`)
                         setUsers(refectchUsers.data)
                     })
@@ -78,8 +78,8 @@ export default function ManageUsers() {
     }
     const handleMarkFraud = (user: UserType) => {
         axiosSecure.patch(`/fraud-users?id=${user._id}`, { is_fraud: "fraud" })
-            .then(async (res) => {
-                console.log(res.data)
+            .then(async () => {
+                // console.log(res.data)
                 const refectchUsers = await axiosSecure.get("/properties");
                 setUsers(refectchUsers.data)
             })

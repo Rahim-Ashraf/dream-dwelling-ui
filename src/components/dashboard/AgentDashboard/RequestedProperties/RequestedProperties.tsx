@@ -47,7 +47,9 @@ export default function RequestedProperties() {
     }
     const handleReject = async (id: string) => {
         axiosSecure.patch(`/accept-property?id=${id}`, { verification_status: "rejected" })
-            .then(res => console.log(res.data))
+            .then(() => {
+                // console.log(res.data)
+            })
 
         const refetchRequestedProperty = await axiosSecure.get(`/requested-properties?email=${user?.email}`)
         setRequestedProperties(refetchRequestedProperty.data)
