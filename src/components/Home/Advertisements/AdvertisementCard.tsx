@@ -1,4 +1,3 @@
-import PrimaryButton from "@/components/shared/PrimaryButton/PrimaryButton"
 import Link from "next/link"
 import { FaArrowTrendUp, FaLocationDot } from "react-icons/fa6"
 
@@ -27,7 +26,9 @@ function AdvertisementCard({ property_image, property_location, price_range, pro
                 </div>
                 <div className="my-auto">
                     <Link href={`/property-details/${property_id}`}>
-                        <PrimaryButton btnText={"View"} BtnIcon={FaArrowTrendUp}></PrimaryButton>
+                        <button className="px-8 py-4 rounded-lg bg-gradient-to-br from-teal-500 to-[#0060f0] text-white w-full flex gap-2 items-center justify-center">
+                            View <FaArrowTrendUp />
+                        </button>
                     </Link>
                 </div>
             </div>
