@@ -70,7 +70,7 @@ export default function Navbar() {
     };
 
     return (
-        <div className="px-4 relative py-4 flex justify-between items-center">
+        <div className="relative flex justify-between items-center px-8 py-4">
             <div className="flex gap-4 items-center">
                 <div className="relative p-4 xl:hidden">
                     {/* Toggle Button */}

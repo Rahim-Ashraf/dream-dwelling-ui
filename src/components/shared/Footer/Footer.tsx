@@ -1,7 +1,7 @@
 
 export default function Footer() {
     return (
-        <footer className="grid grid-cols-2 lg:grid-cols-3 p-10 text-gray-100 bg-gradient-to-br from-teal-500 to-[#0060f0] bg-opacity-10 text-base-content mt-10">
+        <footer className="grid grid-cols-2 lg:grid-cols-3 text-gray-100 bg-gradient-to-br from-teal-500 to-[#0060f0] bg-opacity-10 text-base-content mt-10  p-8">
             <nav>
                 <h6 className="footer-title">Services</h6>
                 <p className="link link-hover">Buy Property</p>
