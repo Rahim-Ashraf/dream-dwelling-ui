@@ -21,7 +21,7 @@ const useAxiosSecure = () => {
     }, (error) => {
         const status = error.response.status;
         if (status === 401 || status === 403) {
-            router.push('/')
+            router.push('/signin')
         }
         return Promise.reject(error);
     })

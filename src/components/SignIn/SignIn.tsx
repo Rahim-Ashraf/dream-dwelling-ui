@@ -35,7 +35,6 @@ export default function SignIn() {
             callbackUrl: "/",
         });
         if (authRes?.ok) {
-
             Swal.fire({
                 position: "center",
                 icon: "success",
@@ -51,8 +50,10 @@ export default function SignIn() {
                     router.push(authRes.url as string);
                     setFormData({ email: '', password: '' })
                 })
-
-        } else {
+                .catch(err => console.log(err))
+                .finally(() => setLoading(false))
+        }
+        else {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -60,6 +61,7 @@ export default function SignIn() {
                 confirmButtonText: "Try again",
                 confirmButtonColor: "#0060f0",
             });
+            setLoading(false)
         }
     }
 
@@ -87,7 +89,10 @@ export default function SignIn() {
                     confirmButtonText: "Try again",
                     confirmButtonColor: "#0060f0",
                 });
-            });
+            })
+            .finally(() => {
+                setLoading(false)
+            })
 
     }
 
@@ -124,11 +129,11 @@ export default function SignIn() {
                         className={`px-6 py-3 rounded w-full ${loading ? "bg-slate-100 text-slate-800" : "bg-gradient-to-br from-teal-500 to-[#0060f0] text-white"}`}>{loading ? "Loading..." : "Login"}</button>
                 </div>
             </form>
-            <div>
+            {/* <div>
                 <p className="flex gap-4">
                     <span className="font-bold">Login with</span> <button onClick={handleGoogleLogin} className="text-4xl"><FcGoogle /></button>
                 </p>
-            </div>
+            </div> */}
             <div className="flex justify-between">
                 <div>
                     <span className="font-bold">New here?</span>
