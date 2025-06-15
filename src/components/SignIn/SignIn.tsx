@@ -1,12 +1,11 @@
 "use client"
 
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { FaEye } from "react-icons/fa6";
-import { FcGoogle } from "react-icons/fc";
 import { IoMdEyeOff } from "react-icons/io";
 import Swal from "sweetalert2";
 
@@ -16,7 +15,7 @@ export default function SignIn() {
     const [showPass, setShowPass] = useState(true);
     const [formData, setFormData] = useState({ email: "", password: "" })
     const router = useRouter();
-    const { data: session } = useSession();
+    // const { data: session } = useSession();
 
     // const searchParams = useSearchParams()
     // const callbackUrl = searchParams.get("callbackUrl")
@@ -65,36 +64,36 @@ export default function SignIn() {
         }
     }
 
-    const handleGoogleLogin = () => {
-        signIn('google', { callbackUrl: "/" })
-            .then(() => {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "Loged In Successfully",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                axiosSecure.post('/jwt', { email: session?.user?.email })
-                    .then((res) => {
-                        localStorage.setItem("access-token", res.data.token)
-                    })
-            })
-            .catch((error) => {
-                console.error('Signin failed:', error);
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Login failed",
-                    confirmButtonText: "Try again",
-                    confirmButtonColor: "#0060f0",
-                });
-            })
-            .finally(() => {
-                setLoading(false)
-            })
+    // const handleGoogleLogin = () => {
+    //     signIn('google', { callbackUrl: "/" })
+    //         .then(() => {
+    //             Swal.fire({
+    //                 position: "center",
+    //                 icon: "success",
+    //                 title: "Loged In Successfully",
+    //                 showConfirmButton: false,
+    //                 timer: 1500
+    //             });
+    //             axiosSecure.post('/jwt', { email: session?.user?.email })
+    //                 .then((res) => {
+    //                     localStorage.setItem("access-token", res.data.token)
+    //                 })
+    //         })
+    //         .catch((error) => {
+    //             console.error('Signin failed:', error);
+    //             Swal.fire({
+    //                 icon: "error",
+    //                 title: "Oops...",
+    //                 text: "Login failed",
+    //                 confirmButtonText: "Try again",
+    //                 confirmButtonColor: "#0060f0",
+    //             });
+    //         })
+    //         .finally(() => {
+    //             setLoading(false)
+    //         })
 
-    }
+    // }
 
     return (
         <div className="p-8 rounded-lg mt-10 shadow-2xl shadow-teal-200 max-w-screen-xl w-full md:w-2/3 lg:w-1/2 mx-auto space-y-8">
