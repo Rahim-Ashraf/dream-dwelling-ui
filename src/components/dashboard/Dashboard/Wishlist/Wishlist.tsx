@@ -2,6 +2,7 @@
 
 import useAxiosSecure from "@/hooks/useAxiosSecure"
 import { useSession } from "next-auth/react"
+import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
@@ -65,7 +66,8 @@ export default function Wishlist() {
             {wishlists.map(wishlist => <div key={wishlist._id}
                 className="rounded-xl overflow-hidden shadow-lg shadow-teal-200">
                 <figure>
-                    <img src={wishlist.property_image} alt="" />
+                    <Image src={wishlist.property_image} alt=""
+                        width={600} height={400} />
                 </figure>
                 <div className="w-full p-4">
                     <h2 className="text-2xl font-bold mb-4">{wishlist.property_title}</h2>
@@ -87,7 +89,9 @@ export default function Wishlist() {
                     <div className="flex justify-between items-center">
                         <p className="font-bold">Agent: {wishlist.agent_name}</p>
                         <div className="max-w-10">
-                            <img className="rounded-[50%]" src={wishlist.agent_image} alt="agent" />
+                            <Image src={wishlist.agent_image} alt="agent"
+                                width={40} height={40}
+                                className="rounded-[50%]" />
                         </div>
                     </div>
                     <hr className="my-8" />
@@ -95,8 +99,8 @@ export default function Wishlist() {
                         <Link href={`/dashboard/make-offer/${wishlist.property_id}`}>
                             <button className="px-6 py-3 rounded-lg bg-gradient-to-br from-teal-500 to-[#0060f0] text-white w-full">Make an offer</button>
                         </Link>
-                        <button onClick={() => handleRemoveWishlist(wishlist._id)} 
-                        className="px-6 py-3 rounded-lg bg-red-600 text-white w-full">Remove</button>
+                        <button onClick={() => handleRemoveWishlist(wishlist._id)}
+                            className="px-6 py-3 rounded-lg bg-red-600 text-white w-full">Remove</button>
                     </div>
                 </div>
             </div>)}

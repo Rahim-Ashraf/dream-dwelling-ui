@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { signOut, useSession } from "next-auth/react";
 import Menu from '@mui/material/Menu';
+import Image from "next/image";
 
 
 
@@ -119,9 +120,10 @@ export default function Navbar() {
                         onClick={handleClick}
                     >
                         <div className="w-10 rounded-full overflow-hidden">
-                            <img
+                            <Image
                                 src={session.data.user?.image || "/boy.png"}  //need to update url
                                 alt="user"
+                                width={40} height={40}
                             />
                         </div>
                     </button>

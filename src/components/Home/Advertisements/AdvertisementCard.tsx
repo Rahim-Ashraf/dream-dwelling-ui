@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link"
 import { FaArrowTrendUp, FaLocationDot } from "react-icons/fa6"
 
@@ -12,8 +13,9 @@ function AdvertisementCard({ property_image, property_location, price_range, pro
     return (
         <div className="bg-[#0066ff] bg-opacity-10 p-4 shadow-lg shadow-teal-200 rounded-lg space-y-4 flex flex-col justify-between gap-4">
             <figure>
-                <img src={property_image}
+                <Image src={property_image}
                     alt=""
+                    width={400} height={400}
                     className="rounded-xl border" />
             </figure>
             <div className="space-y-4">

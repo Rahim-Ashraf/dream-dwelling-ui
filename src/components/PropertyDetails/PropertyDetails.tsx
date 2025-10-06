@@ -3,6 +3,7 @@
 import useAxiosSecure from "@/hooks/useAxiosSecure"
 import { Box, Modal } from "@mui/material"
 import { useSession } from "next-auth/react"
+import Image from "next/image"
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
 
@@ -121,7 +122,8 @@ export default function PropertyDetails({ id }: { id: string }) {
     return (<>
         <div className="lg:flex p-2 md:p-4">
             <div className="w-full">
-                <img src={propertyDetails?.property_image} alt=""
+                <Image src={propertyDetails?.property_image || ''} alt=""
+                    width={800} height={600}
                     className="rounded-lg" />
             </div>
             <div className="card px-6 py-2 w-full">
@@ -144,7 +146,8 @@ export default function PropertyDetails({ id }: { id: string }) {
                 <div className="flex justify-between">
                     <p className="font-bold">Agent: {propertyDetails?.agent_name}</p>
                     <div className="max-w-20">
-                        <img src={propertyDetails?.agent_image} alt=""
+                        <Image src={propertyDetails?.agent_image || ''} alt=""
+                            width={50} height={50}
                             className="rounded-[50%]" />
                     </div>
                 </div>
@@ -189,8 +192,9 @@ export default function PropertyDetails({ id }: { id: string }) {
                 {reviews.map(review => <div key={review._id} className="p-4 rounded-lg shadow-lg shadow-teal-200 bg-[#0066ff] bg-opacity-5">
                     <div className='flex gap-2'>
                         <div className="">
-                            <img src={review.reviewer_image}
+                            <Image src={review.reviewer_image}
                                 alt={review.reviewer_name}
+                                width={50} height={50}
                                 className='rounded-full max-w-14' />
                         </div>
                         <div>

@@ -1,6 +1,7 @@
 "use client"
 
 import useAxiosSecure from "@/hooks/useAxiosSecure";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -63,7 +64,8 @@ export default function ManageReviews() {
                 className="shadow-lg shadow-teal-200 p-4 rounded-lg flex flex-col justify-between space-y-4">
                 <div className='grid grid-cols-4 gap-2'>
                     <div className="w-full col-span-1">
-                        <img src={review.reviewer_image} alt={review.reviewer_name}
+                        <Image src={review.reviewer_image} alt={review.reviewer_name}
+                            width={100} height={100}
                             className='rounded-full' />
                     </div>
                     <div className="col-span-3 space-y-2">

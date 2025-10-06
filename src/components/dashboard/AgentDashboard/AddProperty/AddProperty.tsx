@@ -1,8 +1,8 @@
 "use client"
 
 import useAxiosSecure from "@/hooks/useAxiosSecure";
-import axios from "axios";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -33,6 +33,30 @@ export default function AddProperty() {
         const { name, value } = e.target
         setFormData((prev) => ({ ...prev, [name]: value }))
     }
+
+    // handle image upload on cloudinary
+    const [imageUrl, setImageUrl] = useState<string | null>(null)
+    const [imageUploading, setImageUploading] = useState<boolean>(false)
+    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setImageUploading(true)
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "unsigned_upload"); //unsigned preset name
+
+        const res = await fetch(
+            `https://api.cloudinary.com/v1_1/dlad6rlwd/image/upload`,
+            {
+                method: "POST",
+                body: formData,
+            }
+        );
+        const data = await res.json();
+        setImageUrl(data.secure_url);
+        setImageUploading(false)
+    }
+
     const handleAddProperty = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setAddPropertyLoading(true);
@@ -57,16 +81,6 @@ export default function AddProperty() {
         const price_range_to = formData.price_range_to
         const price_range = `${price_range_from}-${price_range_to}`;
 
-        const target = e.target as typeof e.target & {
-            property_image: { files: FileList };
-        };
-        const image = target.property_image.files[0];
-        const imgData = new FormData();
-        imgData.set('key', 'c2fde89598db76e7697f8f2bf3f338ec')
-        imgData.append("image", image)
-        const res = await axios.post("https://api.imgbb.com/1/upload", imgData)
-        const property_image = res.data.data.image.url;
-
         const data = {
             property_title,
             property_location,
@@ -74,7 +88,7 @@ export default function AddProperty() {
             agent_email,
             agent_image: user?.image,
             price_range,
-            property_image,
+            property_image: imageUrl,
             verification_status: "pending",
         }
         axiosSecure.post("/properties", data)
@@ -102,13 +116,14 @@ export default function AddProperty() {
     return (
         <div className="p-8 rounded-xl w-full max-w-6xl mx-auto shadow-2xl bg-slate-100">
             <form onSubmit={handleAddProperty}
-            className="space-y-4">
+                className="space-y-4">
                 <div className="w-full">
                     <label>
                         <span className="font-semibold">Property title</span>
                     </label>
                     <input placeholder="Property Title" required
                         onChange={handlePropertyChange}
+                        name="property_title"
                         value={formData.property_title}
                         className="border rounded-lg p-3 w-full" />
 
@@ -119,6 +134,7 @@ export default function AddProperty() {
                     </label>
                     <input placeholder="Property Location" required
                         onChange={handlePropertyChange}
+                        name="property_location"
                         value={formData.property_location}
                         className="border rounded-lg p-3 w-full" />
                 </div>
@@ -131,6 +147,7 @@ export default function AddProperty() {
                             </label>
                             <input type="number" placeholder="Min price" required
                                 onChange={handlePropertyChange}
+                                name="price_range_from"
                                 value={formData.price_range_from}
                                 className="border rounded-lg p-3 w-full" />
                         </div>
@@ -140,6 +157,7 @@ export default function AddProperty() {
                             </label>
                             <input type="number" placeholder="Max Price" required
                                 onChange={handlePropertyChange}
+                                name="price_range_to"
                                 value={formData.price_range_to}
                                 className="border rounded-lg p-3 w-full" />
                         </div>
@@ -149,8 +167,12 @@ export default function AddProperty() {
                     <label>
                         <span className="font-semibold">Property image</span>
                     </label>
-                    <input type="file" required
-                        className="w-full file:p-3 file:border-none file:bg-gray-700 file:text-white fle:font-semibold file:mr-2 border rounded-lg" />
+                    <div className="flex gap-4">
+                        <input type="file" required
+                            onChange={handleUpload}
+                            className={`${imageUrl ? 'w-5/6' : 'w-full'} file:p-3 file:border-none file:bg-gray-700 file:text-white fle:font-semibold file:mr-2 border rounded-lg`} />
+                        {imageUrl && <Image src={imageUrl} alt="Uploaded" width={50} height={50} className="rounded" />}
+                    </div>
                 </div>
                 <div className="md:flex gap-6">
                     <div className="w-full">
@@ -168,8 +190,13 @@ export default function AddProperty() {
                             className="border rounded-lg p-3 w-full" required />
                     </div>
                 </div>
-                <input type="submit" disabled={addPropertyLoading} value="Add Property"
-                    className="px-6 py-3 rounded-lg w-full cursor-pointer bg-gradient-to-br from-teal-500 to-[#0060f0] text-white" />
+                <input type="submit" disabled={addPropertyLoading || imageUploading}
+                    value={`${imageUploading ? 'Imgage uploading...' :
+                        addPropertyLoading ? 'uploading...' : 'Add Property'}`}
+                    className={`px-6 py-3 rounded w-full ${addPropertyLoading || imageUploading ?
+                        "bg-slate-100 text-slate-800" :
+                        "bg-gradient-to-br from-teal-500 to-[#0060f0] text-white"}`}
+                />
             </form>
         </div>
     )

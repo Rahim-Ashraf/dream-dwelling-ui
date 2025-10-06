@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 
@@ -5,7 +6,9 @@ export default function NotFound() {
     return (
         <div className="flex flex-col md:flex-row-reverse gap-6 p-10 justify-center items-center max-w-[1920px] mx-auto">
             <div className="w-full md:w-1/2">
-                <img src="/assets/not-found.jpg" alt="" />
+                <Image src="/assets/not-found.jpg"
+                    width={600} height={400}
+                    alt="" />
             </div>
             <div className="w-full md:w-1/2 text-center">
                 <h1 className="text-5xl md:text-8xl font-bold text-[#0066ff]">ERROR</h1>

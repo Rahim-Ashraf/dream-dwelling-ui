@@ -2,6 +2,7 @@
 
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
@@ -67,7 +68,9 @@ export default function MyAddedProperties() {
             {myAddedProperties.map(property => <div key={property._id}
                 className="rounded-xl overflow-hidden bg-slate-100 shadow-lg shadow-teal-200 flex flex-col justify-between">
                 <figure>
-                    <img src={property.property_image} alt="" />
+                    <Image src={property.property_image} alt=""
+                        width={600} height={400}
+                    />
                 </figure>
                 <div className="p-4">
                     <div>
@@ -84,7 +87,9 @@ export default function MyAddedProperties() {
                         <div className="flex justify-between">
                             <p className="font-bold">Agent: {property.agent_name}</p>
                             <div className="max-w-20">
-                                <img className="rounded-[50%]" src={property.property_image} alt="" />
+                                <Image src={property.property_image} alt=""
+                                    width={50} height={50}
+                                    className="rounded-[50%]" />
                             </div>
                         </div>
                     </div>

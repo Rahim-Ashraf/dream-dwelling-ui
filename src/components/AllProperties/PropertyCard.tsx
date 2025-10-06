@@ -1,6 +1,7 @@
 import Link from "next/link"
 import PrimaryButton from "../shared/PrimaryButton/PrimaryButton"
 import { FaLocationDot } from "react-icons/fa6";
+import Image from "next/image";
 
 interface Prop {
     _id: string;
@@ -18,8 +19,9 @@ function PropertyCard({ _id, property_image, property_title, property_location, 
         <div key={_id}
             className="rounded-2xl overflow-hidden shadow-lg shadow-teal-200 flex flex-col justify-between">
             <figure>
-                <img
+                <Image
                     src={property_image}
+                    width={600} height={400}
                     alt="" />
             </figure>
             <div className="p-4">
@@ -37,8 +39,10 @@ function PropertyCard({ _id, property_image, property_title, property_location, 
                     <div className="flex justify-between">
                         <p className="font-bold">Agent: {agent_name}</p>
                         <div className="max-w-12">
-                            <img
-                                src={agent_image}
+                            <Image
+                                src={agent_image?agent_image:'https://res.cloudinary.com/dlad6rlwd/image/upload/v1759759633/esvae1i13dnbwozrmnax.png'}
+                                width={50}
+                                height={50}
                                 alt=""
                                 className="rounded-[50%]" />
                         </div>

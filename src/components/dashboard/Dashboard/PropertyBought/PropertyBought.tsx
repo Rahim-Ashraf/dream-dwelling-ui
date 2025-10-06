@@ -2,6 +2,7 @@
 
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
@@ -39,7 +40,8 @@ const PropertyBought = () => {
             {propertyBoughts.map(propertyBought => <div key={propertyBought._id}
                 className="rounded-xl overflow-hidden bg-base-100 shadow-lg shadow-teal-200">
                 <figure>
-                    <img src={propertyBought.property_image} alt="" />
+                    <Image src={propertyBought.property_image} alt=""
+                    width={100} height={100} />
                 </figure>
                 <div className="p-4">
                     <div>

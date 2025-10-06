@@ -2,6 +2,7 @@
 
 import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 
@@ -37,10 +38,12 @@ export default function MySoldProperties() {
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
                 {
-                    mySoldProperties.map(property => <div key={property._id} 
-                    className="p-4 rounded-xl bg-slat-100 shadow-lg shadow-teal-200">
+                    mySoldProperties.map(property => <div key={property._id}
+                        className="p-4 rounded-xl bg-slat-100 shadow-lg shadow-teal-200">
                         <figure>
-                            <img src={property.property_image} alt="" />
+                            <Image src={property.property_image} alt=""
+                                width={600} height={400}
+                            />
                         </figure>
                         <div className="p-4">
                             <h2 className="font-semibold text-xl">{property.property_title}</h2>

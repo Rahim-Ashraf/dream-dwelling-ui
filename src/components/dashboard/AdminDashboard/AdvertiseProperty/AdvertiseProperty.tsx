@@ -1,6 +1,7 @@
 "use client"
 
 import axios from "axios";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -76,7 +77,9 @@ export default function AdvertiseProperty() {
                             <td>{idx + 1}</td>
                             <td>
                                 <div className="max-w-20">
-                                    <img className="rounded-xl" src={property.property_image} alt="" />
+                                    <Image src={property.property_image} alt=""
+                                    width={500} height={400}
+                                     className="rounded-xl"  />
                                 </div>
                             </td>
                             <td>{property.property_title}</td>

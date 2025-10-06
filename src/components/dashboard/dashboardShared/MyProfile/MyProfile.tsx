@@ -1,5 +1,6 @@
 import authOptions from "@/app/api/auth/[...nextauth]/authOptions";
 import { getServerSession } from "next-auth";
+import Image from "next/image";
 
 export default async function MyProfile() {
     const session = await getServerSession(authOptions);
@@ -16,7 +17,8 @@ export default async function MyProfile() {
         <div className="text-center bg-gradient-to-br from-teal-500 to-[#0060f0] bg-opacity-20 rounded-lg p-6 flex justify-center">
             <div className="space-y-4">
                 <div className="w-24 rounded-3xl overflow-hidden">
-                    <img src={user?.image || undefined} alt="user" />
+                    <Image src={user?.image || "https://res.cloudinary.com/dlad6rlwd/image/upload/v1759756231/samples/people/boy-snow-hoodie.jpg"} alt="user"
+                        width={40} height={40} />
                 </div>
                 <h2 className="font-bold text-2xl text-white">Name: {user?.name}</h2>
                 <h2 className="font-bold text-white">Role: {user?.role}</h2>
