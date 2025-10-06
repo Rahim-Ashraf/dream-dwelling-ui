@@ -18,9 +18,12 @@ interface FraudUsers {
 }
 
 export default async function Advertisements() {
-    const advertiseData = await fetch("https://dream-dwellings-server.vercel.app/advertisements")
+    const advertiseData = await fetch("https://dream-dwellings-server.vercel.app/advertisements",
+        { cache: 'no-store' })
     const advertises = await advertiseData.json()
-    const fraudUsersData = await fetch("https://dream-dwellings-server.vercel.app/fraud-users")
+    const fraudUsersData = await fetch("https://dream-dwellings-server.vercel.app/fraud-users",
+        { next: { revalidate: 60 } }
+    )
     const fraudUsers = await fraudUsersData.json()
     const fraudEmails = await fraudUsers.map((user: FraudUsers) => user.email)
     const advertisements = await advertises.filter((property: Property) => !fraudEmails.includes(property.agent_email))
