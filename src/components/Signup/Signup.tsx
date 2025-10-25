@@ -48,7 +48,7 @@ const Signup = () => {
             }
 
         }
-        axios.post("http://localhost:3000/api/users", { ...formData, photoURI })
+        axios.post("https://dream-dwelling-ui.vercel.app/api/users", { ...formData, photoURI })
             .then(async () => {
                 Swal.fire({
                     position: "center",
@@ -84,8 +84,16 @@ const Signup = () => {
                         text: "Please enter a new email"
                     });
                 }
-                setRegisLoading(false)
+                else{
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "Please try again later",
+                        text: `Something went wrong: ${err.message}`
+                    });
+                }
             })
+            .finally(() => setRegisLoading(false))
     }
     return (
         <div className="mt-10 p-8 rounded-xl shadow-2xl shadow-teal-200 max-w-screen-xl w-full md:w-2/3 lg:w-1/2 mx-auto">
